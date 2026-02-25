@@ -1,0 +1,37 @@
+import ProjectDescription
+
+let project = Project(
+    name: "RadarBursatil",
+    targets: [
+        .target(
+            name: "RadarBursatil",
+            destinations: .iOS,
+            product: .app,
+            bundleId: "dev.tuist.RadarBursatil",
+            infoPlist: .extendingDefault(
+                with: [
+                    "UILaunchScreen": [
+                        "UIColorName": "",
+                        "UIImageName": "",
+                    ],
+                ]
+            ),
+            buildableFolders: [
+                "RadarBursatil/Sources",
+                "RadarBursatil/Resources",
+            ],
+            dependencies: []
+        ),
+        .target(
+            name: "RadarBursatilTests",
+            destinations: .iOS,
+            product: .unitTests,
+            bundleId: "dev.tuist.RadarBursatilTests",
+            infoPlist: .default,
+            buildableFolders: [
+                "RadarBursatil/Tests"
+            ],
+            dependencies: [.target(name: "RadarBursatil")]
+        ),
+    ]
+)
