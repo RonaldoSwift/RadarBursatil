@@ -126,7 +126,7 @@ struct LoginView: View {
                 
                 // LOGIN BUTTON
                 Button(action: {
-                    print("Session")
+                    loginUser()
                 }) {
                     Text("Iniciar Sesión")
                         .fontWeight(.bold)
@@ -194,7 +194,24 @@ struct LoginView: View {
         }
         .background(Color.white)
     }
+    
+    
+    func loginUser() {
+        AuthService.shared.login(email: email, password: password) { result in
+            
+            DispatchQueue.main.async {
+                switch result {
+                case .success(let response):
+                    print("email:", response.email)
+                    print("password:", response.password)
+                case .failure(let error):
+                    print("Error:", error.localizedDescription)
+                }
+            }
+        }
+    }
 }
+
 
 #Preview {
     LoginView()
