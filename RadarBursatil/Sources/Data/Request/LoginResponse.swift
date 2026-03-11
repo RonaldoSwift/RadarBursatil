@@ -8,5 +8,5 @@
 import Foundation
 
 struct LoginResponse: Codable {
-    let message: String
+    let access_token: String
 }

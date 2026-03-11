@@ -11,19 +11,22 @@ class AuthService {
     
     static let shared = AuthService()
     
-    func registerUser(requestBody: LoginRequest,
-                      completion: @escaping (Result<LoginResponse, Error>) -> Void) {
+    func login(email: String,
+               password: String,
+               completion: @escaping (Result<LoginResponse, Error>) -> Void) {
         
-        guard let url = URL(string: "http://localhost:8000/api/v1/auth/register") else {
+        guard let url = URL(string: "https://api.radarbursatil.com/api/v1/auth/login") else {
             return
         }
+        
+        let body = LoginRequest(email: email, password: password)
         
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         
         do {
-            request.httpBody = try JSONEncoder().encode(requestBody)
+            request.httpBody = try JSONEncoder().encode(body)
         } catch {
             completion(.failure(error))
             return

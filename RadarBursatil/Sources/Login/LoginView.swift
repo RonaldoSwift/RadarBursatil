@@ -198,24 +198,18 @@ struct LoginView: View {
     
     func loginUser() {
         
-        let request = LoginRequest(
-            email: email,
-            first_name: "Carlos",
-            last_name: "Vargas",
-            middle_name: "Leonardo",
-            password: password,
-            confirm_password: password
-        )
-        
-        AuthService.shared.registerUser(requestBody: request) { result in
+        AuthService.shared.login(email: email, password: password) { result in
             
             DispatchQueue.main.async {
+                
                 switch result {
                     
                 case .success(let response):
-                    print("Success:", response.message)
+                    
+                    print("Access Token:", response.access_token)
                     
                 case .failure(let error):
+                    
                     print("Error:", error.localizedDescription)
                 }
             }
