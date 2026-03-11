@@ -9,6 +9,7 @@ import SwiftUI
 
 struct LoginView: View {
     
+    @StateObject private var viewModel = LoginViewModel()
     @State private var email: String = ""
     @State private var password: String = ""
     @State private var isPasswordVisible: Bool = false
@@ -126,7 +127,7 @@ struct LoginView: View {
                 
                 // LOGIN BUTTON
                 Button(action: {
-                    loginUser()
+                    viewModel.loginUser(email: email, password: password)
                 }) {
                     Text("Iniciar Sesión")
                         .fontWeight(.bold)
@@ -193,27 +194,6 @@ struct LoginView: View {
             Spacer()
         }
         .background(Color.white)
-    }
-    
-    
-    func loginUser() {
-        
-        AuthService.shared.login(email: email, password: password) { result in
-            
-            DispatchQueue.main.async {
-                
-                switch result {
-                    
-                case .success(let response):
-                    
-                    print("Access Token:", response.access_token)
-                    
-                case .failure(let error):
-                    
-                    print("Error:", error.localizedDescription)
-                }
-            }
-        }
     }
 }
 

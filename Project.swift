@@ -19,6 +19,7 @@ let project = Project(
             buildableFolders: [
                 "RadarBursatil/Sources",
                 "RadarBursatil/Resources",
+                "RadarBursatil/Login"
             ],
             dependencies: []
         ),
