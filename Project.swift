@@ -18,8 +18,21 @@ let project = Project(
             ),
             buildableFolders: [
                 "RadarBursatil/Sources",
-                "RadarBursatil/Resources",
-                "RadarBursatil/Login"
+                "RadarBursatil/Resources"
+            ],
+            dependencies: [
+                .target(name: "Login")
+            ]
+        ),
+        .target(
+            name: "Login",
+            destinations: .iOS,
+            product: .framework,
+            bundleId: "dev.tuist.Login",
+            infoPlist: .default,
+            buildableFolders: [
+                "Login/Sources",
+                "Login/Resources"
             ],
             dependencies: []
         ),

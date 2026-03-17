@@ -8,6 +8,8 @@
 import Foundation
 
 struct LoginResponse: Codable {
-    let email: String
-    let password: String
+    let access_token: String
+    let refresh_token: String
+    let token_type: String
+    let expires_in: Int
 }

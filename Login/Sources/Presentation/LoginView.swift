@@ -7,14 +7,17 @@
 
 import SwiftUI
 
-struct LoginView: View {
+public struct LoginView: View {
     
     @StateObject private var viewModel = LoginViewModel()
     @State private var email: String = ""
     @State private var password: String = ""
     @State private var isPasswordVisible: Bool = false
     
-    var body: some View {
+    public init() {}
+    
+    public var body: some View {
+        
         VStack(spacing: 0) {
             
             HStack {

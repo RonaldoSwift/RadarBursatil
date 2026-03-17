@@ -5,20 +5,15 @@
 //  Created by Ronaldo Andre on 2/03/26.
 //
 
-
 import Foundation
 
 class AuthService {
     
     static let shared = AuthService()
     
-    func login(email: String,
-               password: String,
-               completion: @escaping (Result<LoginResponse, Error>) -> Void) {
+    func login(email: String, password: String, completion: @escaping (Result<LoginResponse, Error>) -> Void) {
         
-        guard let url = URL(string: "https://api.radarbursatil.com/api/v1/auth/login") else {
-            return
-        }
+        guard let url = URL(string: "http://localhost:8000/api/v1/auth/register") else { return }
         
         let body = LoginRequest(email: email, password: password)
         
