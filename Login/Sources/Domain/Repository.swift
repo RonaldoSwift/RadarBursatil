@@ -16,15 +16,10 @@ class AuthRepository {
         self.authService = authService
     }
     
-    func login(email: String, password: String) -> AnyPublisher<String, Error> {
+    func login(email: String, password: String) async throws -> String {
         
-        return authService
-            .fetchLogin(email: email, password: password)
-            .map { (loginResponse: LoginResponse) in
-                
-                loginResponse.access_token
-                
-            }
-            .eraseToAnyPublisher()
+        let response = try await authService.fetchLogin(email: email, password: password)
+        
+        return response.access_token
     }
 }

@@ -7,15 +7,13 @@
 
 
 import Foundation
-import Combine
 
 class AuthService {
     
-    func fetchLogin(email: String, password: String) -> AnyPublisher<LoginResponse, Error> {
+    func fetchLogin(email: String, password: String) async throws -> LoginResponse {
         
         guard let url = URL(string: "https://api.radarbursatil.com/api/v1/auth/login") else {
-            return Fail(error: URLError(.badURL))
-                .eraseToAnyPublisher()
+            throw URLError(.badURL)
         }
         
         let body = LoginRequest(email: email, password: password)
@@ -23,29 +21,18 @@ class AuthService {
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.httpBody = try JSONEncoder().encode(body)
         
-        do {
-            request.httpBody = try JSONEncoder().encode(body)
-        } catch {
-            return Fail(error: error)
-                .eraseToAnyPublisher()
+        let (data, response) = try await URLSession.shared.data(for: request)
+        
+        guard let httpResponse = response as? HTTPURLResponse else {
+            throw URLError(.badServerResponse)
         }
         
-        return URLSession.shared
-            .dataTaskPublisher(for: request)
-            .tryMap { data, response in
-                
-                guard let httpResponse = response as? HTTPURLResponse else {
-                    throw URLError(.badServerResponse)
-                }
-                
-                guard 200...299 ~= httpResponse.statusCode else {
-                    throw URLError(.badServerResponse)
-                }
-                
-                return data
-            }
-            .decode(type: LoginResponse.self, decoder: JSONDecoder())
-            .eraseToAnyPublisher()
+        guard 200...299 ~= httpResponse.statusCode else {
+            throw URLError(.badServerResponse)
+        }
+        
+        return try JSONDecoder().decode(LoginResponse.self, from: data)
     }
 }
