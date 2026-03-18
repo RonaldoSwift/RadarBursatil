@@ -21,7 +21,8 @@ let project = Project(
                 "RadarBursatil/Resources"
             ],
             dependencies: [
-                .target(name: "Login")
+                .target(name: "Login"),
+                .target(name: "Register")
             ]
         ),
         .target(
@@ -33,6 +34,18 @@ let project = Project(
             buildableFolders: [
                 "Login/Sources",
                 "Login/Resources"
+            ],
+            dependencies: []
+        ),
+        .target(
+            name: "Register",
+            destinations: .iOS,
+            product: .framework,
+            bundleId: "dev.tuist.Register",
+            infoPlist: .default,
+            buildableFolders: [
+                "Register/Sources",
+                "Register/Resources"
             ],
             dependencies: []
         ),
