@@ -11,21 +11,23 @@ class RepositoryRegister {
     }
     
     func register(
+        name: String,
         email: String,
-        first_name: String,
-        last_name: String,
-        middle_name: String,
-        password: String,
-        confirm_password: String
+        password: String
     ) async throws -> String {
+        
+        let parts = name.split(separator: " ")
+        
+        let firstName = parts.first.map(String.init) ?? ""
+        let lastName = parts.dropFirst().joined(separator: " ")
         
         let response = try await authServiceRegister.fetchRegister(
             email: email,
-            first_name: first_name,
-            last_name: last_name,
-            middle_name: middle_name,
+            first_name: firstName,
+            last_name: lastName,
+            middle_name: "",
             password: password,
-            confirm_password: confirm_password
+            confirm_password: password
         )
         
         return response.detail

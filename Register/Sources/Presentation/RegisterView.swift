@@ -10,9 +10,6 @@ import SwiftUI
 public struct RegisterView: View {
     
     @StateObject private var viewModel = RegisterViewModel()
-    @State private var name = ""
-    @State private var email = ""
-    @State private var password = ""
     
     @State private var isPasswordVisible = false
     @State private var acceptTerms = false
@@ -76,7 +73,7 @@ public struct RegisterView: View {
                         Image(systemName: "person")
                             .foregroundColor(.gray)
                         
-                        TextField("Ej. Juan Pérez", text: $name)
+                        TextField("Ej. Juan Pérez", text: $viewModel.name)
                     }
                     .padding()
                     .background(
@@ -97,7 +94,7 @@ public struct RegisterView: View {
                         Image(systemName: "envelope")
                             .foregroundColor(.gray)
                         
-                        TextField("tu@correo.com", text: $email)
+                        TextField("tu@correo.com", text: $viewModel.email)
                             .keyboardType(.emailAddress)
                     }
                     .padding()
@@ -122,9 +119,9 @@ public struct RegisterView: View {
                         
                         Group {
                             if isPasswordVisible {
-                                TextField("Mínimo 8 caracteres", text: $password)
+                                TextField("Mínimo 8 caracteres", text: $viewModel.password)
                             } else {
-                                SecureField("Mínimo 8 caracteres", text: $password)
+                                SecureField("Mínimo 8 caracteres", text: $viewModel.password)
                             }
                         }
                         
@@ -178,20 +175,30 @@ public struct RegisterView: View {
                 .font(.footnote)
                 
                 
-                // BOTON
                 Button(action: {
-
-                    
+                    viewModel.registerUser()
                 }) {
-                    Text("Registrarse")
-                        .fontWeight(.bold)
-                        .frame(maxWidth: .infinity)
-                        .padding()
-                        .background(Color.green)
-                        .foregroundColor(.black)
-                        .cornerRadius(30)
+                    ZStack {
+                        if viewModel.isLoading {
+                            ProgressView()
+                        } else {
+                            Text("Registrarse")
+                                .fontWeight(.bold)
+                        }
+                    }
+                    .frame(maxWidth: .infinity)
+                    .padding()
+                    .background(Color.green)
+                    .foregroundColor(.black)
+                    .cornerRadius(30)
                 }
-                .padding(.top)
+                .disabled(viewModel.isLoading)
+                
+                /*if !viewModel.message.isEmpty {
+                    Text(viewModel.message)
+                        .foregroundColor(.red)
+                        .font(.footnote)
+                }*/
                 
                 HStack {
                     Rectangle()
