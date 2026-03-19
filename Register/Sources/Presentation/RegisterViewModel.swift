@@ -19,6 +19,7 @@ class RegisterViewModel: ObservableObject {
     
     @Published var message = ""
     @Published var isLoading = false
+    @Published var showAlert = false
     
     init() {
         let service = AuthServiceRegister()
@@ -26,8 +27,12 @@ class RegisterViewModel: ObservableObject {
     }
     
     func registerUser() {
-        guard !name.isEmpty, !email.isEmpty, !password.isEmpty else {
-            self.message = "Complete todos los espacios"
+        guard name.split(separator: " ").count >= 2,
+              !email.isEmpty,
+              !password.isEmpty else {
+            
+            self.message = "Ingresa nombre y apellido"
+            self.showAlert = true
             return
         }
         
@@ -35,11 +40,24 @@ class RegisterViewModel: ObservableObject {
         
         Task {
             do {
-                let token = try await repositoryRegister.register(name: name, email: email, password: password)
-                self.message = "Registro exitoso"
+                let message = try await repositoryRegister.register(
+                    name: name,
+                    email: email,
+                    password: password
+                )
+                
+                self.message = message
+                self.showAlert = true
                 self.isLoading = false
+                
             } catch {
-                self.message = error.localizedDescription
+                if let apiError = error as? APIError {
+                    self.message = apiError.errorDescription ?? "Error desconocido"
+                } else {
+                    self.message = error.localizedDescription
+                }
+                
+                self.showAlert = true
                 self.isLoading = false
             }
         }

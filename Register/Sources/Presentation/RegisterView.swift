@@ -194,12 +194,6 @@ public struct RegisterView: View {
                 }
                 .disabled(viewModel.isLoading)
                 
-                /*if !viewModel.message.isEmpty {
-                    Text(viewModel.message)
-                        .foregroundColor(.red)
-                        .font(.footnote)
-                }*/
-                
                 HStack {
                     Rectangle()
                         .frame(height: 1)
@@ -241,6 +235,11 @@ public struct RegisterView: View {
             }
             .padding(.horizontal, 24)
             Spacer()
+        }
+        .alert("Mensaje", isPresented: $viewModel.showAlert) {
+            Button("OK", role: .cancel) { }
+        } message: {
+            Text(viewModel.message)
         }
     }
 }

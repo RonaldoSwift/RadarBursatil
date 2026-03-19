@@ -1,4 +1,3 @@
-
 import Foundation
 
 class AuthServiceRegister {
@@ -36,21 +35,32 @@ class AuthServiceRegister {
             throw URLError(.badServerResponse)
         }
         
-        // 🔥 AQUÍ ESTÁ LA MAGIA
         if !(200...299).contains(httpResponse.statusCode) {
             
-            // Intentamos leer el error del backend
-            if let errorResponse = try? JSONDecoder().decode(ErrorResponse.self, from: data) {
-                throw NSError(
-                    domain: "",
-                    code: httpResponse.statusCode,
-                    userInfo: [NSLocalizedDescriptionKey: errorResponse.detail]
-                )
+            let raw = String(data: data, encoding: .utf8) ?? "Error desconocido"
+            
+            if raw.contains("detail") {
+                let detail = raw
+                    .replacingOccurrences(of: "{\"detail\":\"", with: "")
+                    .replacingOccurrences(of: "\"}", with: "")
+                
+                throw APIError.custom(detail)
             } else {
-                throw URLError(.badServerResponse)
+                throw APIError.custom(raw)
             }
         }
         
         return try JSONDecoder().decode(RegisterResponse.self, from: data)
+    }
+}
+
+enum APIError: LocalizedError {
+    case custom(String)
+    
+    var errorDescription: String? {
+        switch self {
+        case .custom(let message):
+            return message
+        }
     }
 }

@@ -30,6 +30,6 @@ class RepositoryRegister {
             confirm_password: password
         )
         
-        return response.detail
+        return response.message
     }
 }
