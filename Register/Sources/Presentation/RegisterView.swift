@@ -9,8 +9,7 @@ import SwiftUI
 
 public struct RegisterView: View {
     
-    @StateObject private var viewModel = RegisterViewModel()
-    
+    @StateObject private var viewModel = container.resolve(RegisterViewModel.self)!
     @State private var isPasswordVisible = false
     @State private var acceptTerms = false
     

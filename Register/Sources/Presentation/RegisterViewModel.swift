@@ -7,6 +7,7 @@
 
 import Foundation
 import Combine
+import Swinject
 @MainActor
 
 class RegisterViewModel: ObservableObject {
@@ -21,9 +22,8 @@ class RegisterViewModel: ObservableObject {
     @Published var isLoading = false
     @Published var showAlert = false
     
-    init() {
-        let service = AuthServiceRegister()
-        self.repositoryRegister = RepositoryRegister(authServiceRegister: service)
+    init(repositoryRegister: RepositoryRegister) {
+        self.repositoryRegister = repositoryRegister
     }
     
     func registerUser() {
