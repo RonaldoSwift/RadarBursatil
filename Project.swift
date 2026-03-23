@@ -14,6 +14,7 @@ let project = Project(
                         "UIColorName": "",
                         "UIImageName": "",
                     ],
+                    "BASE_URL": "$(BASE_URL)"
                 ]
             ),
             buildableFolders: [
@@ -23,7 +24,13 @@ let project = Project(
             dependencies: [
                 .target(name: "Login"),
                 .target(name: "Register")
-            ]
+            ],
+            settings: .settings(
+                configurations: [
+                    .debug(name: "Debug", xcconfig: .relativeToRoot("Tuist/Configs/Config.xcconfig")),
+                    .release(name: "Release", xcconfig: .relativeToRoot("Tuist/Configs/Config.xcconfig"))
+                ]
+            )
         ),
         .target(
             name: "Login",
@@ -49,7 +56,13 @@ let project = Project(
             ],
             dependencies: [
                 .external(name: "Swinject")
-            ]
+            ],
+            settings: .settings(
+                configurations: [
+                    .debug(name: "Debug", xcconfig: .relativeToRoot("Tuist/Configs/Config.xcconfig")),
+                    .release(name: "Release", xcconfig: .relativeToRoot("Tuist/Configs/Config.xcconfig"))
+                ]
+            )
         ),
         .target(
             name: "RadarBursatilTests",

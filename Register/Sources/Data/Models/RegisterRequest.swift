@@ -2,10 +2,19 @@
 import Foundation
 
 struct RegisterRequest: Codable {
-    var email: String
-    var first_name: String
-    var last_name: String
-    var middle_name: String
-    var password: String
-    var confirm_password: String
+    let email: String
+    let firstName: String
+    let lastName: String
+    let middleName: String
+    let password: String
+    let confirmPassword: String
+    
+    enum CodingKeys: String, CodingKey {
+        case email
+        case firstName = "first_name"
+        case lastName = "last_name"
+        case middleName = "middle_name"
+        case password
+        case confirmPassword = "confirm_password"
+    }
 }

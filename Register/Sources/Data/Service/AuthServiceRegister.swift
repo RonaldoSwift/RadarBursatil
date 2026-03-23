@@ -11,17 +11,17 @@ class AuthServiceRegister {
         confirm_password: String
     ) async throws -> RegisterResponse {
         
-        guard let url = URL(string: "https://api.radarbursatil.com/api/v1/auth/register") else {
+        guard let url = URL(string: "\(AppConfig.baseURL)/api/v1/auth/register") else {
             throw URLError(.badURL)
         }
-        
+        print("URL FINAL:", "\(AppConfig.baseURL)/api/v1/auth/register")
         let body = RegisterRequest(
             email: email,
-            first_name: first_name,
-            last_name: last_name,
-            middle_name: middle_name,
+            firstName: first_name,
+            lastName: last_name,
+            middleName: middle_name,
             password: password,
-            confirm_password: confirm_password
+            confirmPassword: confirm_password
         )
         
         var request = URLRequest(url: url)
