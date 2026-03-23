@@ -2,6 +2,12 @@ import ProjectDescription
 
 let project = Project(
     name: "RadarBursatil",
+    settings: .settings(
+        configurations: [
+            .debug(name: "Debug", xcconfig: .relativeToRoot("Configs/Config.xcconfig")),
+            .release(name: "Release", xcconfig: .relativeToRoot("Configs/Config.xcconfig"))
+        ]
+    ),
     targets: [
         .target(
             name: "RadarBursatil",
@@ -24,13 +30,7 @@ let project = Project(
             dependencies: [
                 .target(name: "Login"),
                 .target(name: "Register")
-            ],
-            settings: .settings(
-                configurations: [
-                    .debug(name: "Debug", xcconfig: .relativeToRoot("Tuist/Configs/Config.xcconfig")),
-                    .release(name: "Release", xcconfig: .relativeToRoot("Tuist/Configs/Config.xcconfig"))
-                ]
-            )
+            ]
         ),
         .target(
             name: "Login",
@@ -56,13 +56,7 @@ let project = Project(
             ],
             dependencies: [
                 .external(name: "Swinject")
-            ],
-            settings: .settings(
-                configurations: [
-                    .debug(name: "Debug", xcconfig: .relativeToRoot("Tuist/Configs/Config.xcconfig")),
-                    .release(name: "Release", xcconfig: .relativeToRoot("Tuist/Configs/Config.xcconfig"))
-                ]
-            )
+            ]
         ),
         .target(
             name: "RadarBursatilTests",
@@ -75,5 +69,6 @@ let project = Project(
             ],
             dependencies: [.target(name: "RadarBursatil")]
         ),
-    ]
+    ],
+    
 )

@@ -11,10 +11,17 @@ class AuthServiceRegister {
         confirm_password: String
     ) async throws -> RegisterResponse {
         
-        guard let url = URL(string: "\(AppConfig.baseURL)/api/v1/auth/register") else {
+        let baseURL = Bundle.main.object(forInfoDictionaryKey: "BASE_URL") as? String ?? ""
+
+        guard let url = URL(string: "https://\(baseURL)/api/v1/auth/register") else {
             throw URLError(.badURL)
         }
-        print("URL FINAL:", "\(AppConfig.baseURL)/api/v1/auth/register")
+        
+        print("BASE_URL:", baseURL)
+
+        let fullURL = "\(baseURL)/api/v1/auth/register"
+        print("FULL URL:", fullURL)
+        
         let body = RegisterRequest(
             email: email,
             firstName: first_name,
