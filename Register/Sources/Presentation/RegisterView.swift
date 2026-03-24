@@ -175,6 +175,11 @@ public struct RegisterView: View {
                 
                 
                 Button(action: {
+                    if !acceptTerms {
+                        viewModel.message = "Debes aceptar los términos y condiciones"
+                        viewModel.showAlert = true
+                        return
+                    }
                     viewModel.registerUser()
                 }) {
                     ZStack {
