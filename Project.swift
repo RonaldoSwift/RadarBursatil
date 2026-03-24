@@ -2,6 +2,12 @@ import ProjectDescription
 
 let project = Project(
     name: "RadarBursatil",
+    settings: .settings(
+        configurations: [
+            .debug(name: "Debug", xcconfig: .relativeToRoot("Configs/Config.xcconfig")),
+            .release(name: "Release", xcconfig: .relativeToRoot("Configs/Config.xcconfig"))
+        ]
+    ),
     targets: [
         .target(
             name: "RadarBursatil",
@@ -14,6 +20,7 @@ let project = Project(
                         "UIColorName": "",
                         "UIImageName": "",
                     ],
+                    "BASE_URL": "$(BASE_URL)"
                 ]
             ),
             buildableFolders: [
@@ -21,7 +28,8 @@ let project = Project(
                 "RadarBursatil/Resources"
             ],
             dependencies: [
-                .target(name: "Login")
+                .target(name: "Login"),
+                .target(name: "Register")
             ]
         ),
         .target(
@@ -37,6 +45,20 @@ let project = Project(
             dependencies: []
         ),
         .target(
+            name: "Register",
+            destinations: .iOS,
+            product: .framework,
+            bundleId: "dev.tuist.Register",
+            infoPlist: .default,
+            buildableFolders: [
+                "Register/Sources",
+                "Register/Resources"
+            ],
+            dependencies: [
+                .external(name: "Swinject")
+            ]
+        ),
+        .target(
             name: "RadarBursatilTests",
             destinations: .iOS,
             product: .unitTests,
@@ -47,5 +69,6 @@ let project = Project(
             ],
             dependencies: [.target(name: "RadarBursatil")]
         ),
-    ]
+    ],
+    
 )

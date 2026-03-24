@@ -1,0 +1,8 @@
+//
+//  Config.xcconfig
+//  Config
+//
+//  Created by Ronaldo Andre on 22/03/26.
+//
+
+BASE_URL = https:/$()/api.radarbursatil.com
