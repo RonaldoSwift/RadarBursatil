@@ -29,7 +29,8 @@ let project = Project(
             ],
             dependencies: [
                 .target(name: "Login"),
-                .target(name: "Register")
+                .target(name: "Register"),
+                .target(name: "VerificarEmail")
             ]
         ),
         .target(
@@ -59,6 +60,20 @@ let project = Project(
             ]
         ),
         .target(
+            name: "VerificarEmail",
+            destinations: .iOS,
+            product: .framework,
+            bundleId: "dev.tuist.VerificarEmail",
+            infoPlist: .default,
+            buildableFolders: [
+                "VerificarEmail/Sources",
+                "VerificarEmail/Resources"
+            ],
+            dependencies: [
+                .external(name: "Swinject")
+            ]
+        ),
+        .target(
             name: "RadarBursatilTests",
             destinations: .iOS,
             product: .unitTests,
@@ -70,5 +85,4 @@ let project = Project(
             dependencies: [.target(name: "RadarBursatil")]
         ),
     ],
-    
 )
