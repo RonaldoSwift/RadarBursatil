@@ -30,6 +30,8 @@ class RepositoryRegister {
             confirm_password: password
         )
         
+        let verificationResponse = try await authServiceRegister.sendVerificationEmail(email: email)
+        
         return response.message
     }
 }

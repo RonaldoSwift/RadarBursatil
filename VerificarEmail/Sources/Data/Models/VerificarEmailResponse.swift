@@ -8,6 +8,7 @@
 import Foundation
 
 struct VerificarEmailResponse: Codable {
-    let message: String
-    let success: Bool
+    let detail: String
+    let code: Bool
+    let status: Int
 }

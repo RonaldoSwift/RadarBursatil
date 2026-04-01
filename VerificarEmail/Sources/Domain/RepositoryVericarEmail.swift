@@ -24,6 +24,6 @@ class RepositoryVericarEmail {
         let response = try await AuthServiceVerificarEmail.fetchVerificarEmail(
             email: email
         )
-        return response.message
+        return response.detail
     }
 }

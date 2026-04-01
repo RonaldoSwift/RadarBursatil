@@ -7,7 +7,7 @@ import VerificarEmail
 struct RadarBursatilApp: App {
     var body: some Scene {
         WindowGroup {
-            VerificarEmailView()
+            RegisterView()
         }
     }
 }

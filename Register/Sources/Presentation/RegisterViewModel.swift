@@ -17,6 +17,7 @@ class RegisterViewModel: ObservableObject {
     @Published var name = ""
     @Published var email = ""
     @Published var password = ""
+    @Published var goToVerifyEmail = false
     
     @Published var message = ""
     @Published var isLoading = false
@@ -48,15 +49,11 @@ class RegisterViewModel: ObservableObject {
                 
                 self.message = message
                 self.showAlert = true
+                self.goToVerifyEmail = true
                 self.isLoading = false
                 
             } catch {
-                if let apiError = error as? APIError {
-                    self.message = apiError.errorDescription ?? "Error desconocido"
-                } else {
-                    self.message = error.localizedDescription
-                }
-                
+                self.message = error.localizedDescription
                 self.showAlert = true
                 self.isLoading = false
             }

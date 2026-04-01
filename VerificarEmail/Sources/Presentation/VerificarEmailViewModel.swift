@@ -25,6 +25,30 @@ class VerificarEmailViewModel: ObservableObject {
     }
     
     func registerEmailVerificar(){
+        guard !email.isEmpty else {
+            self.message = "Ingrese los 6 digitos"
+            self.showAlert = true
+            return
+        }
         
+        isLoading = true
+        
+        Task {
+            do {
+                let message = try await repositoryVericarEmail.verificarEmail(email: email)
+                
+                self.message = message
+                self.showAlert = true
+                self.isLoading = false
+            } catch {
+                if let apiError = error as? APIError {
+                    self.message = apiError.errorDescription ?? "Error desconocido"
+                } else {
+                    self.message = error.localizedDescription
+                }
+                self.showAlert = true
+                self.isLoading = false
+            }
+        }
     }
 }
