@@ -9,15 +9,24 @@ import SwiftUI
 
 public struct VerificarEmailView: View {
     
+    let email: String
+    
     @State private var code: [String] = Array(repeating: "", count: 6)
     @FocusState private var focusedIndex: Int?
     
-    public init() {}
+    @State private var expireSeconds = 300
+    @State private var resendSeconds = 30
+    
+    private let timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
+    
+    public init(email: String) {
+        self.email = email
+    }
     
     public var body: some View {
         VStack {
-            
-            VStack(alignment: .leading, spacing: 20) {
+            VStack(alignment: .leading, spacing: 24) {
+                
                 HStack {
                     Button(action: {}) {
                         Image(systemName: "arrow.left")
@@ -27,36 +36,58 @@ public struct VerificarEmailView: View {
                     
                     Spacer()
                     
-                    Text("RADAR BURSÁTIL")
-                        .font(.headline)
-                        .foregroundColor(.gray)
-                        .tracking(1)
+                    HStack(spacing: 8) {
+                        Circle()
+                            .fill(Color.green)
+                            .frame(width: 32, height: 32)
+                            .overlay(
+                                Image(systemName: "wrench.and.screwdriver")
+                                    .font(.system(size: 14))
+                                    .foregroundColor(.white)
+                            )
+                        
+                        Text("Radar Bursátil")
+                            .font(.headline)
+                            .fontWeight(.semibold)
+                            .foregroundColor(.black)
+                    }
                     
                     Spacer()
                 }
-                .padding(.horizontal)
                 .padding(.top)
                 
-                Text("Verifica tu correo")
+                // TITULO
+                Text("Verifica tu identidad")
                     .font(.system(size: 30, weight: .bold))
-                    .padding(.top, 10)
                 
-                Text("Hemos enviado un código de 6 dígitos a tu correo ej***@correo.com. Por favor, ingrésalo a continuación.")
-                    .foregroundColor(.gray)
+                // DESCRIPCION
+                (
+                    Text("Hemos enviado un código de 6 dígitos a ")
+                    + Text(email).fontWeight(.bold)
+                    + Text(". Por favor, ingrésalo a continuación para continuar.")
+                )
+                .foregroundColor(.gray)
                 
+                // OTP INPUTS
                 HStack(spacing: 12) {
                     ForEach(0..<6, id: \.self) { index in
                         TextField("", text: $code[index])
                             .keyboardType(.numberPad)
                             .multilineTextAlignment(.center)
-                            .frame(width: 45, height: 55)
+                            .font(.title3)
+                            .frame(width: 52, height: 62)
                             .background(
-                                RoundedRectangle(cornerRadius: 12)
+                                RoundedRectangle(cornerRadius: 14)
                                     .fill(Color(.systemGray6))
                             )
                             .overlay(
-                                RoundedRectangle(cornerRadius: 12)
-                                    .stroke(Color.gray.opacity(0.3))
+                                RoundedRectangle(cornerRadius: 14)
+                                    .stroke(
+                                        focusedIndex == index
+                                        ? Color.green
+                                        : Color.gray.opacity(0.2),
+                                        lineWidth: 1.5
+                                    )
                             )
                             .focused($focusedIndex, equals: index)
                             .onTapGesture {
@@ -73,20 +104,11 @@ public struct VerificarEmailView: View {
                             }
                     }
                 }
-                VStack(spacing: 6) {
-                    Text("¿No recibiste el código?")
-                        .foregroundColor(.gray)
-                    
-                    Button(action: {
-                        print("Reenviar código")
-                    }) {
-                        Text("Reenviar código")
-                            .foregroundColor(.green)
-                            .fontWeight(.semibold)
-                    }
-                }
-                .frame(maxWidth: .infinity)
                 
+                Text("El código expira en \(formattedTime(expireSeconds))")
+                    .font(.subheadline)
+                    .foregroundColor(.gray)
+                    .frame(maxWidth: .infinity)
             }
             .padding(.horizontal, 24)
             
@@ -96,24 +118,46 @@ public struct VerificarEmailView: View {
                 let fullCode = code.joined()
                 print("Código:", fullCode)
             }) {
-                HStack {
-                    Text("Verificar")
-                        .fontWeight(.bold)
-                    
-                    Image(systemName: "arrow.right")
-                }
-                .frame(maxWidth: .infinity)
-                .padding()
-                .background(Color.green)
-                .foregroundColor(.black)
-                .cornerRadius(30)
+                Text("Verificar")
+                    .fontWeight(.bold)
+                    .frame(maxWidth: .infinity)
+                    .padding()
+                    .background(Color.green)
+                    .foregroundColor(.black)
+                    .cornerRadius(30)
+                    .shadow(radius: 6, y: 4)
             }
             .padding(.horizontal, 24)
+            
+            VStack(spacing: 8) {
+                Text("¿No recibiste el código?")
+                    .foregroundColor(.gray)
+                
+                Text("Reenviar código en \(formattedTime(resendSeconds))")
+                    .foregroundColor(.gray)
+                    .fontWeight(.medium)
+            }
+            .padding(.top, 24)
             .padding(.bottom)
         }
+        .onReceive(timer) { _ in
+            if expireSeconds > 0 {
+                expireSeconds -= 1
+            }
+            
+            if resendSeconds > 0 {
+                resendSeconds -= 1
+            }
+        }
+    }
+    
+    private func formattedTime(_ seconds: Int) -> String {
+        let minutes = seconds / 60
+        let secs = seconds % 60
+        return String(format: "%02d:%02d", minutes, secs)
     }
 }
 
 #Preview {
-    VerificarEmailView()
+    VerificarEmailView(email: "usuario@email.com")
 }

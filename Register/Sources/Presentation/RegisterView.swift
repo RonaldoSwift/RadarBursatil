@@ -247,7 +247,7 @@ public struct RegisterView: View {
                 Text(viewModel.message)
             }
             .navigationDestination(isPresented: $viewModel.goToVerifyEmail) {
-                VerificarEmailView()
+                VerificarEmailView(email: viewModel.email)
             }
         }
     }
