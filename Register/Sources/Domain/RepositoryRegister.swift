@@ -1,4 +1,3 @@
-
 import Foundation
 import Combine
 
@@ -29,8 +28,6 @@ class RepositoryRegister {
             password: password,
             confirm_password: password
         )
-        
-        let verificationResponse = try await authServiceRegister.sendVerificationEmail(email: email)
         
         return response.message
     }

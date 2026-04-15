@@ -64,7 +64,7 @@ class AuthServiceRegister {
         
         let baseURL = Bundle.main.object(forInfoDictionaryKey: "BASE_URL") as? String ?? ""
 
-        guard let url = URL(string: "\(baseURL)/api/v1/auth/email-verification/send") else {
+        guard let url = URL(string: "\(baseURL)/api/v1/auth/register") else {
             throw URLError(.badURL)
         }
         
