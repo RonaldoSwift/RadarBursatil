@@ -10,7 +10,7 @@ import Combine
 import Swinject
 @MainActor
 
-class RegisterViewModel: ObservableObject {
+public class RegisterViewModel: ObservableObject {
     
     private let repositoryRegister: RepositoryRegister
     

@@ -9,12 +9,20 @@ import SwiftUI
 
 public struct LoginView: View {
     
-    @StateObject private var viewModel = LoginViewModel()
+    @StateObject private var viewModel: LoginViewModel
     @State private var email: String = ""
     @State private var password: String = ""
     @State private var isPasswordVisible: Bool = false
     
-    public init() {}
+    var onClickRegister: () -> Void
+
+    public init(
+        viewModel: LoginViewModel,
+        onClickRegister: @escaping () -> Void
+    ) {
+        _viewModel = StateObject(wrappedValue: viewModel)
+        self.onClickRegister = onClickRegister
+    }
     
     public var body: some View {
         
@@ -130,7 +138,9 @@ public struct LoginView: View {
                 
                 // LOGIN BUTTON
                 Button(action: {
-                    viewModel.loginUser(email: email, password: password)
+                    viewModel.email = email
+                    viewModel.password = password
+                    viewModel.loginUser()
                 }) {
                     Text("Iniciar Sesión")
                         .fontWeight(.bold)
@@ -182,7 +192,7 @@ public struct LoginView: View {
                         .foregroundColor(Color("colorLetraLogin"))
                     
                     Button(action: {
-                        print("Registrarse gratis")
+                        onClickRegister()
                     }) {
                         Text(" Registrarse gratis")
                             .foregroundColor(Color("colorFuenteLogo"))
@@ -202,5 +212,12 @@ public struct LoginView: View {
 
 
 #Preview {
-    LoginView()
+    LoginView(
+        viewModel: LoginViewModel(
+            repository: AuthRepository(
+                authService: AuthService()
+            )
+        ),
+        onClickRegister: {}
+    )
 }

@@ -8,22 +8,16 @@
 import Foundation
 import Combine
 
-class RepositoryVericarEmail {
+public class RepositoryVericarEmail {
     
-    private let AuthServiceVerificarEmail: AuthServiceVerificarEmail
+    private let authService: AuthServiceVerificarEmail
     
-    init(AuthServiceVerificarEmail: AuthServiceVerificarEmail) {
-        self.AuthServiceVerificarEmail = AuthServiceVerificarEmail
+    public init(authService: AuthServiceVerificarEmail) {
+        self.authService = authService
     }
     
-    func verificarEmail(email: String) async throws -> String {
-        let parts = email.split(separator: " ")
-        let firstName = parts.first.map(String.init) ?? ""
-        let lastName = parts.dropFirst().joined(separator: " ")
-        
-        let response = try await AuthServiceVerificarEmail.fetchVerificarEmail(
-            email: email
-        )
+    public func verificarEmail(email: String) async throws -> String {
+        let response = try await authService.fetchVerificarEmail(email: email)
         return response.detail
     }
 }

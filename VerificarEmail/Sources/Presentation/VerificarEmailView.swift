@@ -10,18 +10,19 @@ import SwiftUI
 public struct VerificarEmailView: View {
     
     let email: String
-    
+    @StateObject private var viewModel: VerificarEmailViewModel
     @State private var code: [String] = Array(repeating: "", count: 6)
     @FocusState private var focusedIndex: Int?
-    
+
     @State private var expireSeconds = 300
     @State private var resendSeconds = 30
     
     private let timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
     
-    public init(email: String) {
-        self.email = email
-    }
+    public init(email: String, viewModel: VerificarEmailViewModel) {
+            self.email = email
+            _viewModel = StateObject(wrappedValue: viewModel)
+        }
     
     public var body: some View {
         VStack {
@@ -61,11 +62,7 @@ public struct VerificarEmailView: View {
                     .font(.system(size: 30, weight: .bold))
                 
                 // DESCRIPCION
-                (
-                    Text("Hemos enviado un código de 6 dígitos a ")
-                    + Text(email).fontWeight(.bold)
-                    + Text(". Por favor, ingrésalo a continuación para continuar.")
-                )
+                Text("Hemos enviado un código de 6 dígitos a \(Text(email).bold()). Por favor, ingrésalo a continuación para continuar.")
                 .foregroundColor(.gray)
                 
                 // OTP INPUTS
@@ -116,7 +113,8 @@ public struct VerificarEmailView: View {
             
             Button(action: {
                 let fullCode = code.joined()
-                print("Código:", fullCode)
+                viewModel.email = email
+                viewModel.registerEmailVerificar()
             }) {
                 Text("Verificar")
                     .fontWeight(.bold)
@@ -159,5 +157,12 @@ public struct VerificarEmailView: View {
 }
 
 #Preview {
-    VerificarEmailView(email: "usuario@email.com")
+    VerificarEmailView(
+        email: "usuario@email.com",
+        viewModel: VerificarEmailViewModel(
+            repositoryVericarEmail: RepositoryVericarEmail(
+                authService: AuthServiceVerificarEmail()
+            )
+        )
+    )
 }

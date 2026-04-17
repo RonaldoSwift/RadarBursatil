@@ -8,7 +8,7 @@
 import Foundation
 import Combine
 
-class AuthRepository {
+public class AuthRepository {
     
     private let authService: AuthService
     

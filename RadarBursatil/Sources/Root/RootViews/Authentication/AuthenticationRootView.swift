@@ -1,7 +1,7 @@
 import Foundation
 import Login
 import SwiftUI
-
+import Register
 
 struct AuthenticationRootView: View {
     
@@ -11,7 +11,11 @@ struct AuthenticationRootView: View {
     
     var body: some View {
         NavigationView {
-            LoginView()
+            LoginView(
+                viewModel: <#T##LoginViewModel#>,
+                onClickRegister: isActiveRegister = true
+            )
+            .navigation(RegisterView(viewModel: <#RegisterViewModel#>), $isActiveRegister)
         }
     }
 }

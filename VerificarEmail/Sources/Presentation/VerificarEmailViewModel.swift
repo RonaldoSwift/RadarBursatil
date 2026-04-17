@@ -10,7 +10,7 @@ import Combine
 import Swinject
 @MainActor
 
-class VerificarEmailViewModel: ObservableObject {
+public class VerificarEmailViewModel: ObservableObject {
     
     private let repositoryVericarEmail: RepositoryVericarEmail
     

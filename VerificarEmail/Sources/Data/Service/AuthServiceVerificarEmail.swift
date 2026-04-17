@@ -7,13 +7,13 @@
 
 import Foundation
 
-class AuthServiceVerificarEmail {
+public class AuthServiceVerificarEmail {
     
     func fetchVerificarEmail(email: String) async throws -> VerificarEmailResponse {
         
         let baseURL = Bundle.main.object(forInfoDictionaryKey: "BASE_URL") as? String ?? ""
         
-        guard let url = URL(string: "\(baseURL)/api/v1/auth/send-verification-email") else {
+        guard let url = URL(string: "\(baseURL)/api/v1/auth/email-verification/send") else {
             throw URLError(.badURL)
         }
         

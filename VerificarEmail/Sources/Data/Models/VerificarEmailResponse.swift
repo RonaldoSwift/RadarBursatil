@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct VerificarEmailResponse: Codable {
+public struct VerificarEmailResponse: Codable {
     let detail: String
     let code: Bool
     let status: Int

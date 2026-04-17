@@ -8,17 +8,19 @@
 import Foundation
 import Combine
 
-class LoginViewModel: ObservableObject {
+@MainActor
+public class LoginViewModel: ObservableObject {
     
     private let repository: AuthRepository
     
-    init() {
-        let service = AuthService()
-        self.repository = AuthRepository(authService: service)
+    @Published public var email: String = ""
+    @Published public var password: String = ""
+    
+    public init(repository: AuthRepository) {
+        self.repository = repository
     }
     
-    func loginUser(email: String, password: String) {
-        
+    public func loginUser() {
         Task {
             do {
                 let token = try await repository.login(email: email, password: password)

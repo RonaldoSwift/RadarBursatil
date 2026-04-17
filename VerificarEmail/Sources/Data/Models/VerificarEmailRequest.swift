@@ -7,6 +7,6 @@
 
 import Foundation
 
-struct VerificarEmailRequest: Codable {
+public struct VerificarEmailRequest: Codable {
     let email: String
 }
