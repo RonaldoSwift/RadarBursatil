@@ -19,7 +19,8 @@ struct RadarBursatilApp: App {
     var body: some Scene {
         WindowGroup {
             AuthenticationRootView(
-                loginViewModel: container.resolve(LoginViewModel.self)!
+                loginViewModel: container.resolve(LoginViewModel.self)!,
+                registerViewModel: container.resolve(RegisterViewModel.self)!
             )
         }
     }

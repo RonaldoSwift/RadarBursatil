@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import VerificarEmail
 
 public struct RegisterView: View {
     

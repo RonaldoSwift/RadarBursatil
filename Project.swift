@@ -43,7 +43,9 @@ let project = Project(
                 "Login/Sources",
                 "Login/Resources"
             ],
-            dependencies: []
+            dependencies: [
+                .external(name: "Swinject")
+            ]
         ),
         .target(
             name: "Register",
