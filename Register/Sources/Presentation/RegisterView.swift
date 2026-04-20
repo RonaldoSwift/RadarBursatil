@@ -9,15 +9,16 @@ import SwiftUI
 
 public struct RegisterView: View {
     
-    @StateObject private var viewModel = container.resolve(RegisterViewModel.self)!
+    @StateObject private var viewModel: RegisterViewModel
     @State private var isPasswordVisible = false
     @State private var acceptTerms = false
     
-    public init() {}
-
+    public init(viewModel: RegisterViewModel) {
+        _viewModel = StateObject(wrappedValue: viewModel)
+    }
+    
     public var body: some View {
         VStack {
-            
             HStack {
                 Button(action: {}) {
                     Image(systemName: "arrow.left")
@@ -81,7 +82,6 @@ public struct RegisterView: View {
                     )
                 }
                 
-                
                 // EMAIL
                 VStack(alignment: .leading, spacing: 6) {
                     
@@ -102,7 +102,6 @@ public struct RegisterView: View {
                             .fill(Color(.systemGray6))
                     )
                 }
-                
                 
                 // PASSWORD
                 VStack(alignment: .leading, spacing: 6) {
@@ -138,7 +137,6 @@ public struct RegisterView: View {
                     )
                 }
                 
-                
                 // CHECKBOX
                 HStack(alignment: .top) {
                     
@@ -157,16 +155,7 @@ public struct RegisterView: View {
                         }
                     }
                     
-                    (
-                        Text("Acepto los ")
-                        +
-                        Text("Términos y Condiciones")
-                            .foregroundColor(.green)
-                        +
-                        Text(" y la ")
-                        +
-                        Text("Política de Privacidad.")
-                            .foregroundColor(.green)
+                    Text("Acepto los \(Text("Términos y Condiciones").foregroundColor(.green)) y la \(Text("Política de Privacidad.").foregroundColor(.green))"
                     )
                     .lineLimit(nil)
                     .fixedSize(horizontal: false, vertical: true)
@@ -249,5 +238,11 @@ public struct RegisterView: View {
 }
 
 #Preview {
-    RegisterView()
+    RegisterView(
+        viewModel: RegisterViewModel(
+            repositoryRegister: RepositoryRegister(
+                authServiceRegister: AuthServiceRegister()
+            )
+        )
+    )
 }

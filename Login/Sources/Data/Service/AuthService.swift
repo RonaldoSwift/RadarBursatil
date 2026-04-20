@@ -8,11 +8,13 @@
 
 import Foundation
 
-class AuthService {
+public class AuthService {
     
     func fetchLogin(email: String, password: String) async throws -> LoginResponse {
         
-        guard let url = URL(string: "https://api.radarbursatil.com/api/v1/auth/login") else {
+        let baseURL = Bundle.main.object(forInfoDictionaryKey: "BASE_URL") as? String ?? ""
+
+        guard let url = URL(string: "\(baseURL)/api/v1/auth/login") else {
             throw URLError(.badURL)
         }
         
