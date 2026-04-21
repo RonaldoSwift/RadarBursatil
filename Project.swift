@@ -30,7 +30,8 @@ let project = Project(
             dependencies: [
                 .target(name: "Login"),
                 .target(name: "Register"),
-                .target(name: "VerificarEmail")
+                .target(name: "VerificarEmail"),
+                .target(name: "Welcome")
             ]
         ),
         .target(
@@ -70,6 +71,20 @@ let project = Project(
             buildableFolders: [
                 "VerificarEmail/Sources",
                 "VerificarEmail/Resources"
+            ],
+            dependencies: [
+                .external(name: "Swinject")
+            ]
+        ),
+        .target(
+            name: "Welcome",
+            destinations: .iOS,
+            product: .framework,
+            bundleId: "dev.tuist.Welcome",
+            infoPlist: .default,
+            buildableFolders: [
+                "Welcome/Sources",
+                "Welcome/Resources"
             ],
             dependencies: [
                 .external(name: "Swinject")

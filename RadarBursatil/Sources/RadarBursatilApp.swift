@@ -3,6 +3,7 @@ import Login
 import Register
 import VerificarEmail
 import Swinject
+import Welcome
 
 @main
 struct RadarBursatilApp: App {
