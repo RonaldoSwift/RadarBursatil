@@ -15,7 +15,7 @@ public struct LoginView: View {
     @State private var isPasswordVisible: Bool = false
     //Clousure
     var onClickRegister: () -> Void
-
+    
     public init(
         viewModel: LoginViewModel,
         onClickRegister: @escaping () -> Void
@@ -25,36 +25,21 @@ public struct LoginView: View {
     }
     
     public var body: some View {
-        
         VStack(spacing: 0) {
             
-            HStack {
-                Button(action: {}) {
-                    Image(systemName: "chevron.left")
-                        .foregroundColor(.black)
-                        .font(.system(size: 18, weight: .medium))
-                }
+            Spacer()
+            HStack(spacing: 8) {
+                Circle()
+                    .frame(width: 28, height: 28)
+                    .overlay(
+                        Image("logoRadar")
+                    )
                 
-                Spacer()
-                
-                HStack(spacing: 8) {
-                    Circle()
-                        .frame(width: 28, height: 28)
-                        .overlay(
-                            Image("logoRadar")
-                        )
-                    
-                    Text("Radar Bursátil")
-                        .font(.custom("Inter_24pt-Bold", size: 18))
-                }
-                
-                Spacer()
+                Text("Radar Bursátil")
+                    .font(.custom("Inter_24pt-Bold", size: 18))
             }
-            .padding(.horizontal)
-            .padding(.top, 8)
             
             Spacer().frame(height: 50)
-            
             
             VStack(alignment: .leading, spacing: 28) {
                 

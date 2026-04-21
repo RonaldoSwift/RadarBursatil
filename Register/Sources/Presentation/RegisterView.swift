@@ -19,26 +19,6 @@ public struct RegisterView: View {
     
     public var body: some View {
         VStack {
-            HStack {
-                Button(action: {}) {
-                    Image(systemName: "arrow.left")
-                        .font(.title3)
-                        .foregroundColor(.black)
-                }
-                
-                Spacer()
-                
-                Text("Radar Bursátil")
-                    .font(.headline)
-                    .fontWeight(.semibold)
-                
-                Spacer()
-            }
-            .padding(.horizontal)
-            .padding(.top)
-            
-            Spacer()
-            
             VStack(alignment: .leading, spacing: 20) {
                 
                 // ICONO

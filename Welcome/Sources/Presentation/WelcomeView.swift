@@ -12,6 +12,14 @@ public struct WelcomeView: View {
     var onLogin: () -> Void = {}
     var onRegister: () -> Void = {}
     
+    public init(
+        onLogin: @escaping () -> Void,
+        onRegister: @escaping () -> Void
+    ) {
+        self.onLogin = onLogin
+        self.onRegister = onRegister
+    }
+    
     public var body: some View {
         VStack {
             
@@ -138,5 +146,5 @@ public struct WelcomeView: View {
 }
 
 #Preview {
-    WelcomeView()
+    WelcomeView(onLogin: {}, onRegister: {})
 }
