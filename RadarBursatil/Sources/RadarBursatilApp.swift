@@ -21,7 +21,8 @@ struct RadarBursatilApp: App {
         WindowGroup {
             AuthenticationRootView(
                 loginViewModel: container.resolve(LoginViewModel.self)!,
-                registerViewModel: container.resolve(RegisterViewModel.self)!
+                registerViewModel: container.resolve(RegisterViewModel.self)!,
+                verificarEmailViewModel: container.resolve(VerificarEmailViewModel.self)!
             )
         }
     }

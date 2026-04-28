@@ -17,7 +17,7 @@ public class RegisterViewModel: ObservableObject {
     @Published var name = ""
     @Published var email = ""
     @Published var password = ""
-    @Published var goToVerifyEmail = false
+    @Published var isSuccess = false
     
     @Published var message = ""
     @Published var isLoading = false
@@ -49,12 +49,23 @@ public class RegisterViewModel: ObservableObject {
                 
                 self.message = message
                 self.showAlert = true
-                self.goToVerifyEmail = true
+                self.isSuccess = true
                 self.isLoading = false
                 
             } catch {
-                self.message = error.localizedDescription
-                self.showAlert = true
+                let errorMessage = error.localizedDescription
+                
+                if errorMessage.contains("USER_NOT_VERIFIED") {
+                    // 👇 CASO ESPECIAL
+                    self.isSuccess = true
+                    self.message = "Tu cuenta ya existe. Verifica tu correo."
+                    self.showAlert = true
+                    
+                } else {
+                    self.message = errorMessage
+                    self.showAlert = true
+                }
+                
                 self.isLoading = false
             }
         }
