@@ -47,7 +47,9 @@ public class RegisterViewModel: ObservableObject {
                     password: password
                 )
                 
-                self.message = message
+                try await repositoryRegister.sendVerification(email: email)
+                
+                self.message = "Te enviamos un código a tu correo"
                 self.showAlert = true
                 self.isSuccess = true
                 self.isLoading = false
@@ -56,9 +58,11 @@ public class RegisterViewModel: ObservableObject {
                 let errorMessage = error.localizedDescription
                 
                 if errorMessage.contains("USER_NOT_VERIFIED") {
-                    // 👇 CASO ESPECIAL
+                    
+                    try? await repositoryRegister.sendVerification(email: email)
+                    
+                    self.message = "Ya tienes cuenta. Te reenviamos el código."
                     self.isSuccess = true
-                    self.message = "Tu cuenta ya existe. Verifica tu correo."
                     self.showAlert = true
                     
                 } else {

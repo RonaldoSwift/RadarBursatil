@@ -15,13 +15,16 @@ public struct LoginView: View {
     @State private var isPasswordVisible: Bool = false
     //Clousure
     var onClickRegister: () -> Void
+    var onForgotPassword: () -> Void
     
     public init(
         viewModel: LoginViewModel,
-        onClickRegister: @escaping () -> Void
+        onClickRegister: @escaping () -> Void,
+        onForgotPassword: @escaping () -> Void
     ) {
         _viewModel = StateObject(wrappedValue: viewModel)
         self.onClickRegister = onClickRegister
+        self.onForgotPassword = onForgotPassword
     }
     
     public var body: some View {
@@ -85,7 +88,9 @@ public struct LoginView: View {
                         
                         Spacer()
                         
-                        Button(action: {}) {
+                        Button(action: {
+                            onForgotPassword()
+                        }) {
                             Text("¿Olvidaste tu contraseña?")
                                 .font(.caption)
                                 .foregroundColor(Color("colorFuenteLogo"))
@@ -203,6 +208,6 @@ public struct LoginView: View {
                 authService: AuthService()
             )
         ),
-        onClickRegister: {}
+        onClickRegister: {}, onForgotPassword: {}
     )
 }
