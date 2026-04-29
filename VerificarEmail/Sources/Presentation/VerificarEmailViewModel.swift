@@ -19,6 +19,8 @@ public class VerificarEmailViewModel: ObservableObject {
     @Published var message = ""
     @Published var isLoading = false
     @Published var showAlert = false
+    @Published var expireSeconds = 300
+    @Published var resendSeconds = 30
     
     init(repositoryVericarEmail: RepositoryVericarEmail) {
         self.repositoryVericarEmail = repositoryVericarEmail
@@ -48,6 +50,23 @@ public class VerificarEmailViewModel: ObservableObject {
                 }
                 self.showAlert = true
                 self.isLoading = false
+            }
+        }
+    }
+    
+    func resendCode() {
+        Task {
+            do {
+                let response = try await repositoryVericarEmail.resendCode(email: email)
+                
+                self.message = response.message
+                self.expireSeconds = response.expiresInSeconds
+                self.resendSeconds = response.resendAfterSeconds
+                self.showAlert = true
+                
+            } catch {
+                self.message = error.localizedDescription
+                self.showAlert = true
             }
         }
     }
