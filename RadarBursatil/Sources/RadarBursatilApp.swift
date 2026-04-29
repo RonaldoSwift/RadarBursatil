@@ -3,6 +3,7 @@ import Login
 import Register
 import VerificarEmail
 import Swinject
+import Welcome
 
 @main
 struct RadarBursatilApp: App {
@@ -20,7 +21,8 @@ struct RadarBursatilApp: App {
         WindowGroup {
             AuthenticationRootView(
                 loginViewModel: container.resolve(LoginViewModel.self)!,
-                registerViewModel: container.resolve(RegisterViewModel.self)!
+                registerViewModel: container.resolve(RegisterViewModel.self)!,
+                verificarEmailViewModel: container.resolve(VerificarEmailViewModel.self)!
             )
         }
     }

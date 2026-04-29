@@ -12,33 +12,15 @@ public struct RegisterView: View {
     @StateObject private var viewModel: RegisterViewModel
     @State private var isPasswordVisible = false
     @State private var acceptTerms = false
+    var onRegisterSuccess: (String) -> Void
     
-    public init(viewModel: RegisterViewModel) {
+    public init(viewModel: RegisterViewModel, onRegisterSuccess: @escaping (String) -> Void) {
         _viewModel = StateObject(wrappedValue: viewModel)
+        self.onRegisterSuccess = onRegisterSuccess
     }
     
     public var body: some View {
         VStack {
-            HStack {
-                Button(action: {}) {
-                    Image(systemName: "arrow.left")
-                        .font(.title3)
-                        .foregroundColor(.black)
-                }
-                
-                Spacer()
-                
-                Text("Radar Bursátil")
-                    .font(.headline)
-                    .fontWeight(.semibold)
-                
-                Spacer()
-            }
-            .padding(.horizontal)
-            .padding(.top)
-            
-            Spacer()
-            
             VStack(alignment: .leading, spacing: 20) {
                 
                 // ICONO
@@ -230,19 +212,24 @@ public struct RegisterView: View {
             Spacer()
         }
         .alert("Mensaje", isPresented: $viewModel.showAlert) {
-            Button("OK", role: .cancel) { }
+            
+            Button("OK") {
+                if viewModel.isSuccess {
+                    onRegisterSuccess(viewModel.email)
+                }
+            }
         } message: {
             Text(viewModel.message)
         }
     }
 }
-
-#Preview {
-    RegisterView(
-        viewModel: RegisterViewModel(
-            repositoryRegister: RepositoryRegister(
-                authServiceRegister: AuthServiceRegister()
-            )
+    
+    #Preview {
+        RegisterView(
+            viewModel: RegisterViewModel(
+                repositoryRegister: RepositoryRegister(
+                    authServiceRegister: AuthServiceRegister()
+                )
+            ), onRegisterSuccess: {_ in }
         )
-    )
-}
+    }

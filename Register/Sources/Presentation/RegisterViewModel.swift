@@ -17,7 +17,7 @@ public class RegisterViewModel: ObservableObject {
     @Published var name = ""
     @Published var email = ""
     @Published var password = ""
-    @Published var goToVerifyEmail = false
+    @Published var isSuccess = false
     
     @Published var message = ""
     @Published var isLoading = false
@@ -47,14 +47,29 @@ public class RegisterViewModel: ObservableObject {
                     password: password
                 )
                 
-                self.message = message
+                try await repositoryRegister.sendVerification(email: email)
+                
+                self.message = "Te enviamos un código a tu correo"
                 self.showAlert = true
-                self.goToVerifyEmail = true
+                self.isSuccess = true
                 self.isLoading = false
                 
             } catch {
-                self.message = error.localizedDescription
-                self.showAlert = true
+                let errorMessage = error.localizedDescription
+                
+                if errorMessage.contains("USER_NOT_VERIFIED") {
+                    
+                    try? await repositoryRegister.sendVerification(email: email)
+                    
+                    self.message = "Ya tienes cuenta. Te reenviamos el código."
+                    self.isSuccess = true
+                    self.showAlert = true
+                    
+                } else {
+                    self.message = errorMessage
+                    self.showAlert = true
+                }
+                
                 self.isLoading = false
             }
         }
