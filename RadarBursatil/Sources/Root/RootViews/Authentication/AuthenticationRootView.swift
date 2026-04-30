@@ -9,6 +9,9 @@ import Welcome
 
 struct AuthenticationRootView: View {
     
+    //Injectamos el AppRootManager para poder cambiar la raíz de la aplicación una vez que el usuario se autentique correctamente.
+    @EnvironmentObject var appRootManager: AppRootManager
+    
     @State var isActiveLogin: Bool = false
     @State var isActiveRegister: Bool = false
     @State var isActiveWelcome: Bool = true
@@ -44,7 +47,12 @@ struct AuthenticationRootView: View {
             .navigation(
                 LoginView(viewModel: loginViewModel,
                           onClickRegister: {isActiveRegister = true},
-                          onForgotPassword: {isActiveRecuperar = true}
+                          onForgotPassword: {isActiveRecuperar = true},
+                          onLoginSuccess: {
+                              DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                                  appRootManager.currentRoot = .principal
+                              }
+                          }
                          ),
                 $isActiveLogin
             )
@@ -70,16 +78,10 @@ struct AuthenticationRootView: View {
             )
             .navigation(RecuperarContrasenaView(), $isActiveRecuperar)
             .navigation(CuentaCreadaView(onContinue: {
-                isActiveCuentaCreada = false
-                isActiveLogin = true
+                //Cambiamos la raíz de la aplicación a la pantalla principal una vez que el usuario se autentique correctamente.
+                appRootManager.currentRoot = .principal
             }), $isActiveCuentaCreada
             )
         }
-        
-        /*LoginView(
-         viewModel: loginViewModel,
-         onClickRegister: {isActiveRegister = true}
-         )
-         .navigation(RegisterView(viewModel: registerViewModel), $isActiveRegister)*/
     }
 }

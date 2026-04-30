@@ -11,22 +11,36 @@ import Combine
 @MainActor
 public class LoginViewModel: ObservableObject {
     
-    private let repository: AuthRepository
+    private let repository: RepositoryLogin
     
     @Published public var email: String = ""
     @Published public var password: String = ""
     
-    public init(repository: AuthRepository) {
+    @Published var isLoading = false
+    @Published var isSuccess = false
+    @Published var message = ""
+    @Published var showAlert = false
+    
+    public init(repository: RepositoryLogin) {
         self.repository = repository
     }
     
     public func loginUser() {
+        isLoading = true
+        
         Task {
             do {
-                let token = try await repository.login(email: email, password: password)
-                print("Token: \(token)")
+                let response = try await repository.login(email: email, password: password)
+                
+                print("Token: \(response.accessToken)")
+                
+                self.isSuccess = true
+                self.isLoading = false
+                
             } catch {
-                print("Login failed: \(error.localizedDescription)")
+                self.message = error.localizedDescription
+                self.showAlert = true
+                self.isLoading = false
             }
         }
     }

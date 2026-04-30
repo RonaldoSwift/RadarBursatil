@@ -16,15 +16,18 @@ public struct LoginView: View {
     //Clousure
     var onClickRegister: () -> Void
     var onForgotPassword: () -> Void
+    var onLoginSuccess: () -> Void
     
     public init(
         viewModel: LoginViewModel,
         onClickRegister: @escaping () -> Void,
-        onForgotPassword: @escaping () -> Void
+        onForgotPassword: @escaping () -> Void,
+        onLoginSuccess: @escaping () -> Void
     ) {
         _viewModel = StateObject(wrappedValue: viewModel)
         self.onClickRegister = onClickRegister
         self.onForgotPassword = onForgotPassword
+        self.onLoginSuccess = onLoginSuccess
     }
     
     public var body: some View {
@@ -132,15 +135,21 @@ public struct LoginView: View {
                     viewModel.password = password
                     viewModel.loginUser()
                 }) {
-                    Text("Iniciar Sesión")
-                        .fontWeight(.bold)
-                        .foregroundColor(.black)
-                        .frame(maxWidth: .infinity)
-                        .padding()
-                        .background(Color("colorFuenteLogo"))
-                        .cornerRadius(30)
+                    ZStack {
+                        if viewModel.isLoading {
+                            ProgressView()
+                        } else {
+                            Text("Iniciar Sesión")
+                                .fontWeight(.bold)
+                        }
+                    }
+                    .foregroundColor(.black)
+                    .frame(maxWidth: .infinity)
+                    .padding()
+                    .background(Color("colorFuenteLogo"))
+                    .cornerRadius(30)
                 }
-                .shadow(color: .green.opacity(0.3), radius: 10, x: 0, y: 5)
+                .disabled(viewModel.isLoading)
                 
                 // DIVIDER
                 HStack {
@@ -197,6 +206,11 @@ public struct LoginView: View {
             Spacer()
         }
         .background(Color.white)
+        .onChange(of: viewModel.isSuccess) { success in
+            if success {
+                onLoginSuccess()
+            }
+        }
     }
 }
 
@@ -204,10 +218,10 @@ public struct LoginView: View {
 #Preview {
     LoginView(
         viewModel: LoginViewModel(
-            repository: AuthRepository(
+            repository: RepositoryLogin(
                 authService: AuthService()
             )
         ),
-        onClickRegister: {}, onForgotPassword: {}
+        onClickRegister: {}, onForgotPassword: {}, onLoginSuccess: {}
     )
 }
