@@ -24,4 +24,8 @@ public class RepositoryVericarEmail {
     public func resendCode(email: String) async throws -> ResendVerificationResponse {
         return try await authService.resendVerification(email: email)
     }
+    
+    public func confirmCode(email: String, code: String) async throws -> ConfirmVerificationResponse {
+        return try await authService.confirmVerification(email: email, code: code)
+    }
 }

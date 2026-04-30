@@ -21,6 +21,7 @@ public class VerificarEmailViewModel: ObservableObject {
     @Published var showAlert = false
     @Published var expireSeconds = 300
     @Published var resendSeconds = 30
+    @Published var isVerified = false
     
     init(repositoryVericarEmail: RepositoryVericarEmail) {
         self.repositoryVericarEmail = repositoryVericarEmail
@@ -67,6 +68,31 @@ public class VerificarEmailViewModel: ObservableObject {
             } catch {
                 self.message = error.localizedDescription
                 self.showAlert = true
+            }
+        }
+    }
+    
+    func confirmCode(code: String) {
+        guard code.count == 6 else {
+            self.message = "Ingrese el codigo completo"
+            self.showAlert = true
+            return
+        }
+        
+        isLoading = true
+        
+        Task {
+            do {
+                let response = try await repositoryVericarEmail.confirmCode(email: email, code: code)
+                
+                self.message = response.message
+                self.isVerified = true
+                self.showAlert = true
+                self.isLoading = false
+            } catch {
+                self.message = error.localizedDescription
+                self.showAlert = true
+                self.isLoading = false
             }
         }
     }

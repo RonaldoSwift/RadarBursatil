@@ -28,6 +28,7 @@ public class RegisterViewModel: ObservableObject {
     }
     
     func registerUser() {
+        isSuccess = false
         guard name.split(separator: " ").count >= 2,
               !email.isEmpty,
               !password.isEmpty else {
@@ -41,7 +42,7 @@ public class RegisterViewModel: ObservableObject {
         
         Task {
             do {
-                let message = try await repositoryRegister.register(
+                _ = try await repositoryRegister.register(
                     name: name,
                     email: email,
                     password: password

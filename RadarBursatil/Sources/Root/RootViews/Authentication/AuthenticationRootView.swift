@@ -4,6 +4,7 @@ import SwiftUI
 import Register
 import VerificarEmail
 import RecuperarContrasena
+import CuentaCreada
 import Welcome
 
 struct AuthenticationRootView: View {
@@ -13,6 +14,7 @@ struct AuthenticationRootView: View {
     @State var isActiveWelcome: Bool = true
     @State var isActiveVerificarEmail: Bool = false
     @State var isActiveRecuperar: Bool = false
+    @State var isActiveCuentaCreada: Bool = false
     @State var email: String = ""
     
     var loginViewModel: LoginViewModel
@@ -57,10 +59,21 @@ struct AuthenticationRootView: View {
                 $isActiveRegister
             )
             .navigation(
-                VerificarEmailView(email: email, viewModel: verificarEmailViewModel),
+                VerificarEmailView(
+                    email: email,
+                    viewModel: verificarEmailViewModel,
+                    onSuccess: {
+                        isActiveCuentaCreada = true
+                    }
+                ),
                 $isActiveVerificarEmail
             )
             .navigation(RecuperarContrasenaView(), $isActiveRecuperar)
+            .navigation(CuentaCreadaView(onContinue: {
+                isActiveCuentaCreada = false
+                isActiveLogin = true
+            }), $isActiveCuentaCreada
+            )
         }
         
         /*LoginView(

@@ -149,6 +149,7 @@ public struct RegisterView: View {
                     if !acceptTerms {
                         viewModel.message = "Debes aceptar los términos y condiciones"
                         viewModel.showAlert = true
+                        viewModel.isSuccess = false
                         return
                     }
                     viewModel.registerUser()

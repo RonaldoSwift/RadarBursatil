@@ -7,11 +7,15 @@
 
 import SwiftUI
 
-struct CuentaCreadaView: View {
+public struct CuentaCreadaView: View {
     
     var onContinue: () -> Void = {}
     
-    var body: some View {
+    public init(onContinue: @escaping () -> Void) {
+        self.onContinue = onContinue
+    }
+    
+    public var body: some View {
         VStack {
             
             Spacer().frame(height: 40)
@@ -139,5 +143,5 @@ struct CuentaCreadaView: View {
 }
 
 #Preview {
-    CuentaCreadaView()
+    CuentaCreadaView(onContinue: {})
 }

@@ -16,8 +16,11 @@ public struct VerificarEmailView: View {
     
     private let timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
     
-    public init(email: String, viewModel: VerificarEmailViewModel) {
+    var onSuccess: () -> Void
+    
+    public init(email: String, viewModel: VerificarEmailViewModel, onSuccess: @escaping () -> Void) {
         self.email = email
+        self.onSuccess = onSuccess
         _viewModel = StateObject(wrappedValue: viewModel)
     }
     
@@ -111,7 +114,7 @@ public struct VerificarEmailView: View {
             Button(action: {
                 let fullCode = code.joined()
                 viewModel.email = email
-                viewModel.registerEmailVerificar()
+                viewModel.confirmCode(code: fullCode)
             }) {
                 Text("Verificar")
                     .fontWeight(.bold)
@@ -148,6 +151,15 @@ public struct VerificarEmailView: View {
                 viewModel.resendSeconds -= 1
             }
         }
+        .alert("Mensaje", isPresented: $viewModel.showAlert) {
+            Button("OK") {
+                if viewModel.isVerified {
+                    onSuccess()
+                }
+            }
+        } message: {
+            Text(viewModel.message)
+        }
     }
     
     private func formattedTime(_ seconds: Int) -> String {
@@ -164,6 +176,6 @@ public struct VerificarEmailView: View {
             repositoryVericarEmail: RepositoryVericarEmail(
                 authService: AuthServiceVerificarEmail()
             )
-        )
+        ), onSuccess: {}
     )
 }
