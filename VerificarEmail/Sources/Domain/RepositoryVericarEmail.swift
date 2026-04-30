@@ -16,11 +16,6 @@ public class RepositoryVericarEmail {
         self.authService = authService
     }
     
-    public func verificarEmail(email: String) async throws -> String {
-        let response = try await authService.fetchVerificarEmail(email: email)
-        return response.detail
-    }
-    
     public func resendCode(email: String) async throws -> ResendVerificationResponse {
         return try await authService.resendVerification(email: email)
     }
