@@ -8,7 +8,7 @@
 import Foundation
 import Combine
 
-public class AuthRepository {
+public class RepositoryLogin {
     
     private let authService: AuthService
     
@@ -16,10 +16,7 @@ public class AuthRepository {
         self.authService = authService
     }
     
-    func login(email: String, password: String) async throws -> String {
-        
-        let response = try await authService.fetchLogin(email: email, password: password)
-        
-        return response.access_token
+    func login(email: String, password: String) async throws -> LoginResponse {
+        return try await authService.fetchLogin(email: email, password: password)
     }
 }

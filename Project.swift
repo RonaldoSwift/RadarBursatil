@@ -30,7 +30,11 @@ let project = Project(
             dependencies: [
                 .target(name: "Login"),
                 .target(name: "Register"),
-                .target(name: "VerificarEmail")
+                .target(name: "VerificarEmail"),
+                .target(name: "Welcome"),
+                .target(name: "Onboarding"),
+                .target(name: "RecuperarContrasena"),
+                .target(name: "CuentaCreada")
             ]
         ),
         .target(
@@ -73,6 +77,61 @@ let project = Project(
             ],
             dependencies: [
                 .external(name: "Swinject")
+            ]
+        ),
+        .target(
+            name: "Welcome",
+            destinations: .iOS,
+            product: .framework,
+            bundleId: "dev.tuist.Welcome",
+            infoPlist: .default,
+            buildableFolders: [
+                "Welcome/Sources",
+                "Welcome/Resources"
+            ],
+            dependencies: [
+                .external(name: "Swinject")
+            ]
+        ),
+        .target(
+            name: "Onboarding",
+            destinations: .iOS,
+            product: .framework,
+            bundleId: "dev.tuist.Onboarding",
+            infoPlist: .default,
+            buildableFolders: [
+                "Onboarding/Sources",
+                "Onboarding/Resources"
+            ],
+            dependencies: [
+                .external(name: "Swinject")
+            ]
+        ),
+        .target(
+            name: "RecuperarContrasena",
+            destinations: .iOS,
+            product: .framework,
+            bundleId: "dev.tuist.RecuperarContrasena",
+            infoPlist: .default,
+            buildableFolders: [
+                "RecuperarContrasena/Sources",
+                "RecuperarContrasena/Resources"
+            ],
+            dependencies: [
+                .external(name: "Swinject")
+            ]
+        ),
+        .target(
+            name: "CuentaCreada",
+            destinations: .iOS,
+            product: .framework,
+            bundleId: "dev.tuist.CuentaCreada",
+            infoPlist: .default,
+            buildableFolders: [
+                "CuentaCreada/Sources",
+                "CuentaCreada/Resources"
+            ],
+            dependencies: [.external(name: "Swinject")
             ]
         ),
         .target(

@@ -19,14 +19,34 @@ public class VerificarEmailViewModel: ObservableObject {
     @Published var message = ""
     @Published var isLoading = false
     @Published var showAlert = false
+    @Published var expireSeconds = 300
+    @Published var resendSeconds = 30
+    @Published var isVerified = false
     
     init(repositoryVericarEmail: RepositoryVericarEmail) {
         self.repositoryVericarEmail = repositoryVericarEmail
     }
     
-    func registerEmailVerificar(){
-        guard !email.isEmpty else {
-            self.message = "Ingrese los 6 digitos"
+    func resendCode() {
+        Task {
+            do {
+                let response = try await repositoryVericarEmail.resendCode(email: email)
+                
+                self.message = response.message
+                self.expireSeconds = response.expiresInSeconds
+                self.resendSeconds = response.resendAfterSeconds
+                self.showAlert = true
+                
+            } catch {
+                self.message = error.localizedDescription
+                self.showAlert = true
+            }
+        }
+    }
+    
+    func confirmCode(code: String) {
+        guard code.count == 6 else {
+            self.message = "Ingrese el codigo completo"
             self.showAlert = true
             return
         }
@@ -35,17 +55,14 @@ public class VerificarEmailViewModel: ObservableObject {
         
         Task {
             do {
-                let message = try await repositoryVericarEmail.verificarEmail(email: email)
+                let response = try await repositoryVericarEmail.confirmCode(email: email, code: code)
                 
-                self.message = message
+                self.message = response.message
+                self.isVerified = true
                 self.showAlert = true
                 self.isLoading = false
             } catch {
-                if let apiError = error as? APIError {
-                    self.message = apiError.errorDescription ?? "Error desconocido"
-                } else {
-                    self.message = error.localizedDescription
-                }
+                self.message = error.localizedDescription
                 self.showAlert = true
                 self.isLoading = false
             }

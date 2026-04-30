@@ -15,46 +15,37 @@ public struct LoginView: View {
     @State private var isPasswordVisible: Bool = false
     //Clousure
     var onClickRegister: () -> Void
-
+    var onForgotPassword: () -> Void
+    var onLoginSuccess: () -> Void
+    
     public init(
         viewModel: LoginViewModel,
-        onClickRegister: @escaping () -> Void
+        onClickRegister: @escaping () -> Void,
+        onForgotPassword: @escaping () -> Void,
+        onLoginSuccess: @escaping () -> Void
     ) {
         _viewModel = StateObject(wrappedValue: viewModel)
         self.onClickRegister = onClickRegister
+        self.onForgotPassword = onForgotPassword
+        self.onLoginSuccess = onLoginSuccess
     }
     
     public var body: some View {
-        
         VStack(spacing: 0) {
             
-            HStack {
-                Button(action: {}) {
-                    Image(systemName: "chevron.left")
-                        .foregroundColor(.black)
-                        .font(.system(size: 18, weight: .medium))
-                }
+            Spacer()
+            HStack(spacing: 8) {
+                Circle()
+                    .frame(width: 28, height: 28)
+                    .overlay(
+                        Image("logoRadar")
+                    )
                 
-                Spacer()
-                
-                HStack(spacing: 8) {
-                    Circle()
-                        .frame(width: 28, height: 28)
-                        .overlay(
-                            Image("logoRadar")
-                        )
-                    
-                    Text("Radar Bursátil")
-                        .font(.custom("Inter_24pt-Bold", size: 18))
-                }
-                
-                Spacer()
+                Text("Radar Bursátil")
+                    .font(.custom("Inter_24pt-Bold", size: 18))
             }
-            .padding(.horizontal)
-            .padding(.top, 8)
             
             Spacer().frame(height: 50)
-            
             
             VStack(alignment: .leading, spacing: 28) {
                 
@@ -100,7 +91,9 @@ public struct LoginView: View {
                         
                         Spacer()
                         
-                        Button(action: {}) {
+                        Button(action: {
+                            onForgotPassword()
+                        }) {
                             Text("¿Olvidaste tu contraseña?")
                                 .font(.caption)
                                 .foregroundColor(Color("colorFuenteLogo"))
@@ -142,15 +135,21 @@ public struct LoginView: View {
                     viewModel.password = password
                     viewModel.loginUser()
                 }) {
-                    Text("Iniciar Sesión")
-                        .fontWeight(.bold)
-                        .foregroundColor(.black)
-                        .frame(maxWidth: .infinity)
-                        .padding()
-                        .background(Color("colorFuenteLogo"))
-                        .cornerRadius(30)
+                    ZStack {
+                        if viewModel.isLoading {
+                            ProgressView()
+                        } else {
+                            Text("Iniciar Sesión")
+                                .fontWeight(.bold)
+                        }
+                    }
+                    .foregroundColor(.black)
+                    .frame(maxWidth: .infinity)
+                    .padding()
+                    .background(Color("colorFuenteLogo"))
+                    .cornerRadius(30)
                 }
-                .shadow(color: .green.opacity(0.3), radius: 10, x: 0, y: 5)
+                .disabled(viewModel.isLoading)
                 
                 // DIVIDER
                 HStack {
@@ -207,6 +206,11 @@ public struct LoginView: View {
             Spacer()
         }
         .background(Color.white)
+        .onChange(of: viewModel.isSuccess) { success in
+            if success {
+                onLoginSuccess()
+            }
+        }
     }
 }
 
@@ -214,10 +218,10 @@ public struct LoginView: View {
 #Preview {
     LoginView(
         viewModel: LoginViewModel(
-            repository: AuthRepository(
+            repository: RepositoryLogin(
                 authService: AuthService()
             )
         ),
-        onClickRegister: {}
+        onClickRegister: {}, onForgotPassword: {}, onLoginSuccess: {}
     )
 }

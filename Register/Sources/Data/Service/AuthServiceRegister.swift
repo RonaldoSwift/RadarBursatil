@@ -60,11 +60,11 @@ class AuthServiceRegister {
         return try JSONDecoder().decode(RegisterResponse.self, from: data)
     }
     
-    func sendVerificationEmail(email: String) async throws -> EmailVerificationResponse {
+    func sendVerificationEmail(email: String) async throws -> EmailVerificationSendResponse {
         
         let baseURL = Bundle.main.object(forInfoDictionaryKey: "BASE_URL") as? String ?? ""
 
-        guard let url = URL(string: "\(baseURL)/api/v1/auth/register") else {
+        guard let url = URL(string: "\(baseURL)/api/v1/auth/email-verification/send") else {
             throw URLError(.badURL)
         }
         
@@ -79,7 +79,7 @@ class AuthServiceRegister {
         
         try validateResponse(data: data, response: response)
         
-        return try JSONDecoder().decode(EmailVerificationResponse.self, from: data)
+        return try JSONDecoder().decode(EmailVerificationSendResponse.self, from: data)
     }
     
     

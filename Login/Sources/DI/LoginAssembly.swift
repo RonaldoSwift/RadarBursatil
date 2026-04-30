@@ -18,8 +18,8 @@ public final class LoginAssembly: Assembly {
             AuthService()
         }
         
-        container.register(AuthRepository.self) { r in
-            AuthRepository(
+        container.register(RepositoryLogin.self) { r in
+            RepositoryLogin(
                 authService: r.resolve(AuthService.self)!
             )
         }
@@ -27,7 +27,7 @@ public final class LoginAssembly: Assembly {
         container.register(LoginViewModel.self) { r in
             MainActor.assumeIsolated {
                 LoginViewModel(
-                    repository: r.resolve(AuthRepository.self)!
+                    repository: r.resolve(RepositoryLogin.self)!
                 )
             }
         }

@@ -13,16 +13,16 @@ public struct VerificarEmailView: View {
     @StateObject private var viewModel: VerificarEmailViewModel
     @State private var code: [String] = Array(repeating: "", count: 6)
     @FocusState private var focusedIndex: Int?
-
-    @State private var expireSeconds = 300
-    @State private var resendSeconds = 30
     
     private let timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
     
-    public init(email: String, viewModel: VerificarEmailViewModel) {
-            self.email = email
-            _viewModel = StateObject(wrappedValue: viewModel)
-        }
+    var onSuccess: () -> Void
+    
+    public init(email: String, viewModel: VerificarEmailViewModel, onSuccess: @escaping () -> Void) {
+        self.email = email
+        self.onSuccess = onSuccess
+        _viewModel = StateObject(wrappedValue: viewModel)
+    }
     
     public var body: some View {
         VStack {
@@ -63,7 +63,7 @@ public struct VerificarEmailView: View {
                 
                 // DESCRIPCION
                 Text("Hemos enviado un código de 6 dígitos a \(Text(email).bold()). Por favor, ingrésalo a continuación para continuar.")
-                .foregroundColor(.gray)
+                    .foregroundColor(.gray)
                 
                 // OTP INPUTS
                 HStack(spacing: 12) {
@@ -102,7 +102,7 @@ public struct VerificarEmailView: View {
                     }
                 }
                 
-                Text("El código expira en \(formattedTime(expireSeconds))")
+                Text("El código expira en \(formattedTime(viewModel.expireSeconds))")
                     .font(.subheadline)
                     .foregroundColor(.gray)
                     .frame(maxWidth: .infinity)
@@ -114,7 +114,7 @@ public struct VerificarEmailView: View {
             Button(action: {
                 let fullCode = code.joined()
                 viewModel.email = email
-                viewModel.registerEmailVerificar()
+                viewModel.confirmCode(code: fullCode)
             }) {
                 Text("Verificar")
                     .fontWeight(.bold)
@@ -127,25 +127,38 @@ public struct VerificarEmailView: View {
             }
             .padding(.horizontal, 24)
             
-            VStack(spacing: 8) {
-                Text("¿No recibiste el código?")
-                    .foregroundColor(.gray)
-                
-                Text("Reenviar código en \(formattedTime(resendSeconds))")
+            if viewModel.resendSeconds == 0 {
+                Button(action: {
+                    viewModel.email = email
+                    viewModel.resendCode()
+                }) {
+                    Text("Reenviar código")
+                        .foregroundColor(.green)
+                        .fontWeight(.semibold)
+                }
+            } else {
+                Text("Reenviar código en \(formattedTime(viewModel.resendSeconds))")
                     .foregroundColor(.gray)
                     .fontWeight(.medium)
             }
-            .padding(.top, 24)
-            .padding(.bottom)
         }
         .onReceive(timer) { _ in
-            if expireSeconds > 0 {
-                expireSeconds -= 1
+            if viewModel.expireSeconds > 0 {
+                viewModel.expireSeconds -= 1
             }
             
-            if resendSeconds > 0 {
-                resendSeconds -= 1
+            if viewModel.resendSeconds > 0 {
+                viewModel.resendSeconds -= 1
             }
+        }
+        .alert("Mensaje", isPresented: $viewModel.showAlert) {
+            Button("OK") {
+                if viewModel.isVerified {
+                    onSuccess()
+                }
+            }
+        } message: {
+            Text(viewModel.message)
         }
     }
     
@@ -163,6 +176,6 @@ public struct VerificarEmailView: View {
             repositoryVericarEmail: RepositoryVericarEmail(
                 authService: AuthServiceVerificarEmail()
             )
-        )
+        ), onSuccess: {}
     )
 }

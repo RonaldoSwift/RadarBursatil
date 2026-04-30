@@ -31,4 +31,8 @@ class RepositoryRegister {
         
         return response.message
     }
+    
+    func sendVerification(email: String) async throws {
+        _ = try await authServiceRegister.sendVerificationEmail(email: email)
+    }
 }
