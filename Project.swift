@@ -34,7 +34,9 @@ let project = Project(
                 .target(name: "Welcome"),
                 .target(name: "Onboarding"),
                 .target(name: "RecuperarContrasena"),
-                .target(name: "CuentaCreada")
+                .target(name: "CuentaCreada"),
+                .target(name: "NuevaContrasena"),
+                .target(name: "ContrasenaActualizada")
             ]
         ),
         .target(
@@ -130,6 +132,32 @@ let project = Project(
             buildableFolders: [
                 "CuentaCreada/Sources",
                 "CuentaCreada/Resources"
+            ],
+            dependencies: [.external(name: "Swinject")
+            ]
+        ),
+        .target(
+            name: "NuevaContrasena",
+            destinations: .iOS,
+            product: .framework,
+            bundleId: "dev.tuist.NuevaContrasena",
+            infoPlist: .default,
+            buildableFolders: [
+                "NuevaContrasena/Sources",
+                "NuevaContrasena/Resources"
+            ],
+            dependencies: [.external(name: "Swinject")
+            ]
+        ),
+        .target(
+            name: "ContrasenaActualizada",
+            destinations: .iOS,
+            product: .framework,
+            bundleId: "dev.tuist.ContrasenaActualizada",
+            infoPlist: .default,
+            buildableFolders: [
+                "ContrasenaActualizada/Sources",
+                "ContrasenaActualizada/Resources"
             ],
             dependencies: [.external(name: "Swinject")
             ]
