@@ -29,14 +29,11 @@ struct OnboardingCard {
             .padding(.top, 16)
             
             Spacer()
-            
             //Imagen Central
             ZStack {
                 
             }
-            
             Spacer().frame(height: 30)
-
         }
     }
 }
