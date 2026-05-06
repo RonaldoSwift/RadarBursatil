@@ -34,7 +34,9 @@ let project = Project(
                 .target(name: "Welcome"),
                 .target(name: "Onboarding"),
                 .target(name: "RecuperarContrasena"),
-                .target(name: "CuentaCreada")
+                .target(name: "CuentaCreada"),
+                .target(name: "NuevaContrasena"),
+                .target(name: "ContrasenaActualizada")
             ]
         ),
         .target(
@@ -44,8 +46,8 @@ let project = Project(
             bundleId: "dev.tuist.Login",
             infoPlist: .default,
             buildableFolders: [
-                "Login/Sources",
-                "Login/Resources"
+                "Features/Login/Sources",
+                "Features/Login/Resources"
             ],
             dependencies: [
                 .external(name: "Swinject")
@@ -58,8 +60,8 @@ let project = Project(
             bundleId: "dev.tuist.Register",
             infoPlist: .default,
             buildableFolders: [
-                "Register/Sources",
-                "Register/Resources"
+                "Features/Register/Sources",
+                "Features/Register/Resources"
             ],
             dependencies: [
                 .external(name: "Swinject")
@@ -72,8 +74,8 @@ let project = Project(
             bundleId: "dev.tuist.VerificarEmail",
             infoPlist: .default,
             buildableFolders: [
-                "VerificarEmail/Sources",
-                "VerificarEmail/Resources"
+                "Features/VerificarEmail/Sources",
+                "Features/VerificarEmail/Resources"
             ],
             dependencies: [
                 .external(name: "Swinject")
@@ -86,8 +88,8 @@ let project = Project(
             bundleId: "dev.tuist.Welcome",
             infoPlist: .default,
             buildableFolders: [
-                "Welcome/Sources",
-                "Welcome/Resources"
+                "Features/Welcome/Sources",
+                "Features/Welcome/Resources"
             ],
             dependencies: [
                 .external(name: "Swinject")
@@ -100,8 +102,8 @@ let project = Project(
             bundleId: "dev.tuist.Onboarding",
             infoPlist: .default,
             buildableFolders: [
-                "Onboarding/Sources",
-                "Onboarding/Resources"
+                "Features/Onboarding/Sources",
+                "Features/Onboarding/Resources"
             ],
             dependencies: [
                 .external(name: "Swinject")
@@ -114,8 +116,8 @@ let project = Project(
             bundleId: "dev.tuist.RecuperarContrasena",
             infoPlist: .default,
             buildableFolders: [
-                "RecuperarContrasena/Sources",
-                "RecuperarContrasena/Resources"
+                "Features/RecuperarContrasena/Sources",
+                "Features/RecuperarContrasena/Resources"
             ],
             dependencies: [
                 .external(name: "Swinject")
@@ -128,8 +130,34 @@ let project = Project(
             bundleId: "dev.tuist.CuentaCreada",
             infoPlist: .default,
             buildableFolders: [
-                "CuentaCreada/Sources",
-                "CuentaCreada/Resources"
+                "Features/CuentaCreada/Sources",
+                "Features/CuentaCreada/Resources"
+            ],
+            dependencies: [.external(name: "Swinject")
+            ]
+        ),
+        .target(
+            name: "NuevaContrasena",
+            destinations: .iOS,
+            product: .framework,
+            bundleId: "dev.tuist.NuevaContrasena",
+            infoPlist: .default,
+            buildableFolders: [
+                "Features/NuevaContrasena/Sources",
+                "Features/NuevaContrasena/Resources"
+            ],
+            dependencies: [.external(name: "Swinject")
+            ]
+        ),
+        .target(
+            name: "ContrasenaActualizada",
+            destinations: .iOS,
+            product: .framework,
+            bundleId: "dev.tuist.ContrasenaActualizada",
+            infoPlist: .default,
+            buildableFolders: [
+                "Features/ContrasenaActualizada/Sources",
+                "Features/ContrasenaActualizada/Resources"
             ],
             dependencies: [.external(name: "Swinject")
             ]
