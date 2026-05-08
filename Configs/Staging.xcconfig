@@ -1,0 +1,2 @@
+// Staging Configuration
+BASE_URL = https:/$()/staging-api.radarbursatil.com
