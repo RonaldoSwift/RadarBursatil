@@ -2,14 +2,22 @@
 import PackageDescription
 
 #if TUIST
-    import struct ProjectDescription.PackageSettings
+import struct ProjectDescription.PackageSettings
 
-    let packageSettings = PackageSettings(
-        // Customize the product types for specific package product
-        // Default is .staticFramework
-        // productTypes: ["Alamofire": .framework,]
-        productTypes: ["Swinject": .framework]
+let packageSettings = PackageSettings(
+    // Customize the product types for specific package product
+    // Default is .staticFramework
+    // productTypes: ["Alamofire": .framework,]
+    productTypes: ["Swinject": .framework],
+    baseSettings: .settings(
+        // Esto es para que las librerias externas reconoczcan mi schemes
+        configurations: [
+            .debug(name: "Staging"),
+            .release(name: "Production"),
+            .debug(name: "Staging-Production")
+        ]
     )
+)
 #endif
 
 let package = Package(
