@@ -1,0 +1,2 @@
+// Production Configuration
+BASE_URL = https:/$()/api.radarbursatil.com
