@@ -51,7 +51,17 @@ let project = Project(
                 .target(name: "ContrasenaActualizada")
             ]
         ),
-        
+            .target(
+                name: "StorageKit",
+                destinations: .iOS,
+                product: .framework,
+                bundleId: "dev.tuist.StorageKit",
+                infoPlist: .default,
+                buildableFolders: [
+                    "Shared/StorageKit/Sources"
+                ],
+                dependencies: []
+            ),
             .target(
                 name: "Login",
                 destinations: .iOS,
@@ -63,6 +73,7 @@ let project = Project(
                     "Features/Login/Resources"
                 ],
                 dependencies: [
+                    .target(name: "StorageKit"),
                     .external(name: "Swinject")
                 ]
             ),

@@ -7,6 +7,7 @@
 
 import Foundation
 import Swinject
+import StorageKit
 
 public final class LoginAssembly: Assembly {
     
@@ -18,9 +19,14 @@ public final class LoginAssembly: Assembly {
             AuthService()
         }
         
+        container.register(SessionStorage.self) { _ in
+            SessionStorageImpl()
+        }
+        
         container.register(RepositoryLogin.self) { r in
             RepositoryLogin(
-                authService: r.resolve(AuthService.self)!
+                authService: r.resolve(AuthService.self)!,
+                sessionStorage: r.resolve(SessionStorage.self)!
             )
         }
         

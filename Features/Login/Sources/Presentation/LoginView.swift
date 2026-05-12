@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import StorageKit
 
 public struct LoginView: View {
     
@@ -219,9 +220,12 @@ public struct LoginView: View {
     LoginView(
         viewModel: LoginViewModel(
             repository: RepositoryLogin(
-                authService: AuthService()
+                authService: AuthService(),
+                sessionStorage: SessionStorageImpl()
             )
         ),
-        onClickRegister: {}, onForgotPassword: {}, onLoginSuccess: {}
+        onClickRegister: {},
+        onForgotPassword: {},
+        onLoginSuccess: {}
     )
 }
