@@ -1,8 +1,9 @@
 import Foundation
 
+//No tinee codigo solo define las funciones 
 public protocol SessionStorage {
     
-    func saveSession(token: String)
+    func saveIsLoggedIn(token: String)
     
     func isLoggedIn() -> Bool
     

@@ -27,7 +27,7 @@ public class RepositoryLogin {
             email: email,
             password: password
         )
-        sessionStorage.saveSession(token: response.accessToken)
+        sessionStorage.saveIsLoggedIn(token: response.accessToken)
         return response
     }
 }

@@ -19,14 +19,9 @@ public final class LoginAssembly: Assembly {
             AuthService()
         }
         
-        container.register(SessionStorage.self) { _ in
-            SessionStorageImpl()
-        }
-        
         container.register(RepositoryLogin.self) { r in
             RepositoryLogin(
-                authService: r.resolve(AuthService.self)!,
-                sessionStorage: r.resolve(SessionStorage.self)!
+                authService: r.resolve(AuthService.self)!, sessionStorage: r.resolve(SessionStorage.self)!
             )
         }
         

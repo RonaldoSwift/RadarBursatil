@@ -10,10 +10,11 @@ import StorageKit
 struct RadarBursatilApp: App {
     
     @StateObject private var appRootManager = AppRootManager()
-    private let sessionStorage: SessionStorage = SessionStorageImpl()
+    
     
     let container: Container = {
         let assembler = Assembler([
+            SessionStorageAssembly(),
             LoginAssembly(),
             RegisterAssembly(),
             VerificarEmailAssembly()
@@ -39,9 +40,11 @@ struct RadarBursatilApp: App {
                 }
             }
             .onAppear {
+                let sessionStorage = container.resolve(SessionStorage.self)!
                 if sessionStorage.isLoggedIn() {
                     appRootManager.currentRoot = .principal
-                } else {
+                }
+                else {
                     appRootManager.currentRoot = .authentication
                 }
             }
