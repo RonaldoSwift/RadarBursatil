@@ -219,10 +219,7 @@ public struct LoginView: View {
 #Preview {
     LoginView(
         viewModel: LoginViewModel(
-            repository: RepositoryLogin(
-                authService: AuthService(),
-                sessionStorage: SessionStorageImpl()
-            )
+            repository: MockRepositoryLogin()
         ),
         onClickRegister: {},
         onForgotPassword: {},

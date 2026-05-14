@@ -9,7 +9,7 @@ import Foundation
 import Combine
 import StorageKit
 
-public class RepositoryLogin {
+public final class RepositoryLogin: RepositoryLoginProtocol {
     
     private let authService: AuthService
     private let sessionStorage: SessionStorage
@@ -22,7 +22,7 @@ public class RepositoryLogin {
         self.sessionStorage = sessionStorage
     }
     
-    func login(email: String, password: String) async throws -> LoginResponse {
+    public func login(email: String, password: String) async throws -> LoginResponse {
         let response = try await authService.fetchLogin(
             email: email,
             password: password

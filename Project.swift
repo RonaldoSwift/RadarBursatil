@@ -60,7 +60,9 @@ let project = Project(
                 buildableFolders: [
                     "Shared/StorageKit/Sources"
                 ],
-                dependencies: []
+                dependencies: [
+                    .external(name: "Swinject")
+                ]
             ),
             .target(
                 name: "Login",

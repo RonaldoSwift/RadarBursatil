@@ -19,16 +19,21 @@ public final class LoginAssembly: Assembly {
             AuthService()
         }
         
-        container.register(RepositoryLogin.self) { r in
+        container.register(SessionStorage.self) { _ in
+            SessionStorageFactory.make()
+        }
+        
+        container.register(RepositoryLoginProtocol.self) { r in
             RepositoryLogin(
-                authService: r.resolve(AuthService.self)!, sessionStorage: r.resolve(SessionStorage.self)!
+                authService: r.resolve(AuthService.self)!,
+                sessionStorage: r.resolve(SessionStorage.self)!
             )
         }
         
         container.register(LoginViewModel.self) { r in
             MainActor.assumeIsolated {
                 LoginViewModel(
-                    repository: r.resolve(RepositoryLogin.self)!
+                    repository: r.resolve(RepositoryLoginProtocol.self)!
                 )
             }
         }

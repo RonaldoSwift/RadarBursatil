@@ -1,7 +1,7 @@
 import Foundation
 
 // Esta no debe ser publica y e implementa las funciones del protocolo
-public class SessionStorageImpl: SessionStorage {
+internal class SessionStorageImpl: SessionStorage {
     
     private let tokenKey = "user_token"
     
