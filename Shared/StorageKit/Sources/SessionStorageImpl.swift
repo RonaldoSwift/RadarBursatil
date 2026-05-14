@@ -1,12 +1,10 @@
 import Foundation
 
 // Esta no debe ser publica y e implementa las funciones del protocolo
-internal class SessionStorageImpl: SessionStorage {
+final class SessionStorageImpl: SessionStorageProtocol {
     
     private let tokenKey = "user_token"
-    
-    public init() {}
-    
+        
     // Conform to `SessionStorage` protocol
     public func saveIsLoggedIn(token: String) {
         UserDefaults.standard.set(token, forKey: tokenKey)

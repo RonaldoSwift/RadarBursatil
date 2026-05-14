@@ -13,7 +13,7 @@ public final class SessionStorageAssembly: Assembly {
     public init() {}
 
     public func assemble(container: Container) {
-        container.register(SessionStorage.self) { _ in
+        container.register(SessionStorageProtocol.self) { _ in
             SessionStorageImpl()
         }
     }

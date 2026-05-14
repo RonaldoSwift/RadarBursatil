@@ -40,7 +40,7 @@ struct RadarBursatilApp: App {
                 }
             }
             .onAppear {
-                let sessionStorage = container.resolve(SessionStorage.self)!
+                let sessionStorage = container.resolve(SessionStorageProtocol.self)!
                 if sessionStorage.isLoggedIn() {
                     appRootManager.currentRoot = .principal
                 }

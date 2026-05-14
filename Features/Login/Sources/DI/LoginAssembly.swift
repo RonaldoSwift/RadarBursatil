@@ -19,14 +19,10 @@ public final class LoginAssembly: Assembly {
             AuthService()
         }
         
-        container.register(SessionStorage.self) { _ in
-            SessionStorageFactory.make()
-        }
-        
         container.register(RepositoryLoginProtocol.self) { r in
             RepositoryLogin(
                 authService: r.resolve(AuthService.self)!,
-                sessionStorage: r.resolve(SessionStorage.self)!
+                sessionStorage: r.resolve(SessionStorageProtocol.self)!
             )
         }
         

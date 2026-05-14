@@ -12,11 +12,11 @@ import StorageKit
 public final class RepositoryLogin: RepositoryLoginProtocol {
     
     private let authService: AuthService
-    private let sessionStorage: SessionStorage
+    private let sessionStorage: SessionStorageProtocol
     
     init(
         authService: AuthService,
-        sessionStorage: SessionStorage
+        sessionStorage: SessionStorageProtocol
     ) {
         self.authService = authService
         self.sessionStorage = sessionStorage

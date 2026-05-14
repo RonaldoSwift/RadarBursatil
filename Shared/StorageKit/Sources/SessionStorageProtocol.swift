@@ -1,7 +1,7 @@
 import Foundation
 
 //No tinee codigo solo define las funciones 
-public protocol SessionStorage {
+public protocol SessionStorageProtocol {
     
     func saveIsLoggedIn(token: String)
     
