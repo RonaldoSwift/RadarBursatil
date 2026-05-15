@@ -4,14 +4,17 @@ import Register
 import VerificarEmail
 import Swinject
 import Welcome
+import StorageKit
 
 @main
 struct RadarBursatilApp: App {
     
     @StateObject private var appRootManager = AppRootManager()
     
+    
     let container: Container = {
         let assembler = Assembler([
+            SessionStorageAssembly(),
             LoginAssembly(),
             RegisterAssembly(),
             VerificarEmailAssembly()
@@ -21,19 +24,29 @@ struct RadarBursatilApp: App {
     
     var body: some Scene {
         WindowGroup {
-            
-            switch appRootManager.currentRoot {
-                
-            case .authentication:
-                AuthenticationRootView(
-                    loginViewModel: container.resolve(LoginViewModel.self)!,
-                    registerViewModel: container.resolve(RegisterViewModel.self)!,
-                    verificarEmailViewModel: container.resolve(VerificarEmailViewModel.self)!
-                )
-                .environmentObject(appRootManager)
-            case .principal:
-                PrincipalRootView()
+            Group {
+                switch appRootManager.currentRoot {
+                case .authentication:
+                    AuthenticationRootView(
+                        loginViewModel: container.resolve(LoginViewModel.self)!,
+                        registerViewModel: container.resolve(RegisterViewModel.self)!,
+                        verificarEmailViewModel: container.resolve(VerificarEmailViewModel.self)!
+                    )
                     .environmentObject(appRootManager)
+                    
+                case .principal:
+                    PrincipalRootView()
+                        .environmentObject(appRootManager)
+                }
+            }
+            .onAppear {
+                let sessionStorage = container.resolve(SessionStorageProtocol.self)!
+                if sessionStorage.isLoggedIn() {
+                    appRootManager.currentRoot = .principal
+                }
+                else {
+                    appRootManager.currentRoot = .authentication
+                }
             }
         }
     }

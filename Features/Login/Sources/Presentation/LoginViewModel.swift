@@ -11,7 +11,7 @@ import Combine
 @MainActor
 public class LoginViewModel: ObservableObject {
     
-    private let repository: RepositoryLogin
+    private let repository: RepositoryLoginProtocol
     
     @Published public var email: String = ""
     @Published public var password: String = ""
@@ -21,7 +21,7 @@ public class LoginViewModel: ObservableObject {
     @Published var message = ""
     @Published var showAlert = false
     
-    public init(repository: RepositoryLogin) {
+    public init(repository: RepositoryLoginProtocol) {
         self.repository = repository
     }
     
